@@ -65,6 +65,17 @@ resource "google_compute_url_map" "default" {
   default_service = google_compute_backend_service.default.id
 }
 
+# URL map for HTTP to HTTPS redirect
+resource "google_compute_url_map" "http_redirect" {
+  name = "${var.cloud_run_service_name}-http-redirect"
+
+  default_url_redirect {
+    https_redirect         = true
+    redirect_response_code = "MOVED_PERMANENTLY_DEFAULT"
+    strip_query            = false
+  }
+}
+
 # Target HTTPS proxy
 resource "google_compute_target_https_proxy" "default" {
   name             = "${var.cloud_run_service_name}-https-proxy"
@@ -75,7 +86,7 @@ resource "google_compute_target_https_proxy" "default" {
 # Target HTTP proxy (redirects to HTTPS)
 resource "google_compute_target_http_proxy" "default" {
   name    = "${var.cloud_run_service_name}-http-proxy"
-  url_map = google_compute_url_map.default.id
+  url_map = google_compute_url_map.http_redirect.id
 }
 
 # Global forwarding rule for HTTPS
