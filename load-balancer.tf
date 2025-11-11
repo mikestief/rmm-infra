@@ -27,27 +27,15 @@ resource "google_compute_backend_service" "default" {
     sample_rate = 1.0
   }
 
-  health_checks = [google_compute_health_check.default.id]
+  # Health checks are not supported for serverless NEG backends (Cloud Run)
 }
 
-# Health check for backend service
-resource "google_compute_health_check" "default" {
-  name               = "${var.cloud_run_service_name}-health-check"
-  description        = "Health check for ${var.cloud_run_service_name}"
-  timeout_sec        = 5
-  check_interval_sec = 10
-  healthy_threshold  = 2
-  unhealthy_threshold = 3
-
-  http_health_check {
-    port         = 8080
-    request_path = "/health"
-  }
-}
+# Health checks are not supported for serverless NEG backends (Cloud Run)
+# Cloud Run services handle health checks internally
 
 # Google-managed SSL certificate
 resource "google_compute_managed_ssl_certificate" "default" {
-  name = "${var.domain}-ssl-cert"
+  name = replace("${var.domain}-ssl-cert", ".", "-")
 
   managed {
     domains = [var.domain]

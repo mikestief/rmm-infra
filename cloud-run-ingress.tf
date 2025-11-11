@@ -9,14 +9,25 @@ resource "google_cloud_run_v2_service" "default" {
   ingress  = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
 
   template {
-    # Preserve existing container configuration
-    # The actual image and other settings should be managed via CI/CD
-    # This resource primarily manages the ingress setting
+    containers {
+      image = "gcr.io/cloudrun/hello" # Placeholder - actual image managed by CI/CD
+    }
   }
 
   traffic {
     percent = 100
     type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      template[0].containers[0].image,
+      template[0].containers[0].env,
+      template[0].containers[0].resources,
+      template[0].containers[0].ports,
+      template[0].containers[0].args,
+      template[0].containers[0].command,
+    ]
   }
 }
 
