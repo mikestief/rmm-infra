@@ -1,0 +1,952 @@
+{
+  "version": 4,
+  "terraform_version": "1.5.7",
+  "serial": 44,
+  "lineage": "6d9b90bc-f547-00db-13ea-b78f5498887c",
+  "outputs": {
+    "cloud_sql_connection_name": {
+      "value": "rustymaintenance:us-central1:rmm-vehicle-db-instance",
+      "type": "string"
+    },
+    "cloud_sql_instance_name": {
+      "value": "rmm-vehicle-db-instance",
+      "type": "string"
+    },
+    "cloud_sql_ip_address": {
+      "value": "10.17.0.3",
+      "type": "string"
+    },
+    "database_name": {
+      "value": "rmm_vehicle_db",
+      "type": "string"
+    },
+    "load_balancer_ip": {
+      "value": "34.13.124.115",
+      "type": "string"
+    },
+    "ssl_certificate_name": {
+      "value": "rustymaintenanceman-com-ssl-cert",
+      "type": "string"
+    },
+    "url_map_name": {
+      "value": "rmm-ui-service-url-map",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "google_cloud_run_v2_service",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "annotations": {},
+            "binary_authorization": [],
+            "client": "",
+            "client_version": "",
+            "conditions": [
+              {
+                "execution_reason": "",
+                "last_transition_time": "2025-11-11T01:48:12.745348Z",
+                "message": "",
+                "reason": "",
+                "revision_reason": "",
+                "severity": "",
+                "state": "CONDITION_SUCCEEDED",
+                "type": "RoutesReady"
+              },
+              {
+                "execution_reason": "",
+                "last_transition_time": "2025-11-11T01:47:05.199513Z",
+                "message": "",
+                "reason": "",
+                "revision_reason": "",
+                "severity": "",
+                "state": "CONDITION_SUCCEEDED",
+                "type": "ConfigurationsReady"
+              }
+            ],
+            "create_time": "2025-11-04T02:58:14.850712Z",
+            "creator": "github-actions-sa@rustymaintenance.iam.gserviceaccount.com",
+            "custom_audiences": [],
+            "delete_time": "",
+            "description": "",
+            "effective_annotations": {},
+            "effective_labels": {
+              "commit-sha": "b389857c4bfb6781e7331336d707042a900b751b",
+              "managed-by": "github-actions"
+            },
+            "etag": "\"CJKrysgGEJD63j0/cHJvamVjdHMvcnVzdHltYWludGVuYW5jZS9sb2NhdGlvbnMvdXMtY2VudHJhbDEvc2VydmljZXMvcm1tLXVpLXNlcnZpY2U\"",
+            "expire_time": "",
+            "generation": "13",
+            "id": "projects/rustymaintenance/locations/us-central1/services/rmm-ui-service",
+            "ingress": "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER",
+            "labels": {},
+            "last_modifier": "github-actions-sa@rustymaintenance.iam.gserviceaccount.com",
+            "latest_created_revision": "projects/rustymaintenance/locations/us-central1/services/rmm-ui-service/revisions/rmm-ui-service-00013-xx9",
+            "latest_ready_revision": "projects/rustymaintenance/locations/us-central1/services/rmm-ui-service/revisions/rmm-ui-service-00013-xx9",
+            "launch_stage": "GA",
+            "location": "us-central1",
+            "name": "rmm-ui-service",
+            "observed_generation": "13",
+            "project": "rustymaintenance",
+            "reconciling": false,
+            "template": [
+              {
+                "annotations": {},
+                "containers": [
+                  {
+                    "args": [],
+                    "command": [],
+                    "depends_on": [],
+                    "env": [
+                      {
+                        "name": "GOOGLE_CLOUD_PROJECT",
+                        "value": "rustymaintenance",
+                        "value_source": []
+                      },
+                      {
+                        "name": "NODE_ENV",
+                        "value": "production",
+                        "value_source": []
+                      }
+                    ],
+                    "image": "us-central1-docker.pkg.dev/rustymaintenance/rmm-docker-images/rmm-ui:b389857c4bfb6781e7331336d707042a900b751b",
+                    "liveness_probe": [],
+                    "name": "",
+                    "ports": [
+                      {
+                        "container_port": 8080,
+                        "name": "http1"
+                      }
+                    ],
+                    "resources": [
+                      {
+                        "cpu_idle": true,
+                        "limits": {
+                          "cpu": "1",
+                          "memory": "512Mi"
+                        },
+                        "startup_cpu_boost": true
+                      }
+                    ],
+                    "startup_probe": [
+                      {
+                        "failure_threshold": 1,
+                        "grpc": [],
+                        "http_get": [],
+                        "initial_delay_seconds": 0,
+                        "period_seconds": 240,
+                        "tcp_socket": [
+                          {
+                            "port": 8080
+                          }
+                        ],
+                        "timeout_seconds": 240
+                      }
+                    ],
+                    "volume_mounts": [
+                      {
+                        "mount_path": "/cloudsql",
+                        "name": "cloudsql"
+                      }
+                    ],
+                    "working_dir": ""
+                  }
+                ],
+                "encryption_key": "",
+                "execution_environment": "",
+                "labels": {},
+                "max_instance_request_concurrency": 80,
+                "revision": "",
+                "scaling": [
+                  {
+                    "max_instance_count": 20,
+                    "min_instance_count": 0
+                  }
+                ],
+                "service_account": "rmm-ui-service@rustymaintenance.iam.gserviceaccount.com",
+                "session_affinity": false,
+                "timeout": "600s",
+                "volumes": [
+                  {
+                    "cloud_sql_instance": [
+                      {
+                        "instances": [
+                          "rustymaintenance:us-central1:rmm-vehicle-db-instance"
+                        ]
+                      }
+                    ],
+                    "gcs": [],
+                    "name": "cloudsql",
+                    "nfs": [],
+                    "secret": []
+                  }
+                ],
+                "vpc_access": [
+                  {
+                    "connector": "projects/rustymaintenance/locations/us-central1/connectors/rmm-ui-service-connector",
+                    "egress": "PRIVATE_RANGES_ONLY",
+                    "network_interfaces": []
+                  }
+                ]
+              }
+            ],
+            "terminal_condition": [
+              {
+                "execution_reason": "",
+                "last_transition_time": "2025-11-11T01:48:12.783010Z",
+                "message": "",
+                "reason": "",
+                "revision_reason": "",
+                "severity": "",
+                "state": "CONDITION_SUCCEEDED",
+                "type": "Ready"
+              }
+            ],
+            "terraform_labels": {},
+            "timeouts": null,
+            "traffic": [
+              {
+                "percent": 100,
+                "revision": "",
+                "tag": "",
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+              }
+            ],
+            "traffic_statuses": [
+              {
+                "percent": 100,
+                "revision": "",
+                "tag": "",
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "uri": ""
+              }
+            ],
+            "uid": "418b2d41-1561-4f59-85c1-862ea622c8b6",
+            "update_time": "2025-11-11T01:46:58.129482Z",
+            "uri": "https://rmm-ui-service-tatja57rwa-uc.a.run.app"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "google_sql_database_instance.vehicle_db",
+            "google_vpc_access_connector.cloud_run_connector"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_compute_backend_service",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "affinity_cookie_ttl_sec": 0,
+            "backend": [
+              {
+                "balancing_mode": "UTILIZATION",
+                "capacity_scaler": 1,
+                "description": "",
+                "group": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/regions/us-central1/networkEndpointGroups/rmm-ui-service-neg",
+                "max_connections": 0,
+                "max_connections_per_endpoint": 0,
+                "max_connections_per_instance": 0,
+                "max_rate": 0,
+                "max_rate_per_endpoint": 0,
+                "max_rate_per_instance": 0,
+                "max_utilization": 0
+              }
+            ],
+            "cdn_policy": [],
+            "circuit_breakers": [],
+            "compression_mode": "",
+            "connection_draining_timeout_sec": 300,
+            "consistent_hash": [],
+            "creation_timestamp": "2025-11-10T10:39:52.849-08:00",
+            "custom_request_headers": [],
+            "custom_response_headers": [],
+            "description": "Backend service for rmm-ui-service",
+            "edge_security_policy": "",
+            "enable_cdn": false,
+            "fingerprint": "iEcQFPM3mLI=",
+            "generated_id": 720973893656874903,
+            "health_checks": [],
+            "iap": [],
+            "id": "projects/rustymaintenance/global/backendServices/rmm-ui-service-backend",
+            "load_balancing_scheme": "EXTERNAL_MANAGED",
+            "locality_lb_policies": [],
+            "locality_lb_policy": "",
+            "log_config": [
+              {
+                "enable": true,
+                "sample_rate": 1
+              }
+            ],
+            "name": "rmm-ui-service-backend",
+            "outlier_detection": [],
+            "port_name": "http",
+            "project": "rustymaintenance",
+            "protocol": "HTTP",
+            "security_policy": "",
+            "security_settings": [],
+            "self_link": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/backendServices/rmm-ui-service-backend",
+            "service_lb_policy": "",
+            "session_affinity": "NONE",
+            "timeout_sec": 30,
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "google_compute_region_network_endpoint_group.cloud_run_neg"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_compute_global_address",
+      "name": "private_ip_address",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "address": "10.17.0.0",
+            "address_type": "INTERNAL",
+            "creation_timestamp": "2025-11-11T05:47:10.834-08:00",
+            "description": "",
+            "effective_labels": {},
+            "id": "projects/rustymaintenance/global/addresses/cloud-sql-private-ip-range",
+            "ip_version": "",
+            "label_fingerprint": "42WmSpB8rSM=",
+            "labels": {},
+            "name": "cloud-sql-private-ip-range",
+            "network": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/networks/default",
+            "prefix_length": 16,
+            "project": "rustymaintenance",
+            "purpose": "VPC_PEERING",
+            "self_link": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/addresses/cloud-sql-private-ip-range",
+            "terraform_labels": {},
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "google_project_service.service_networking"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_compute_global_forwarding_rule",
+      "name": "http",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "base_forwarding_rule": "",
+            "description": "",
+            "effective_labels": {},
+            "id": "projects/rustymaintenance/global/forwardingRules/rmm-ui-service-http-forwarding-rule",
+            "ip_address": "136.110.151.193",
+            "ip_protocol": "TCP",
+            "ip_version": "IPV4",
+            "label_fingerprint": "42WmSpB8rSM=",
+            "labels": {},
+            "load_balancing_scheme": "EXTERNAL_MANAGED",
+            "metadata_filters": [],
+            "name": "rmm-ui-service-http-forwarding-rule",
+            "network": "",
+            "no_automate_dns_zone": null,
+            "port_range": "80-80",
+            "project": "rustymaintenance",
+            "psc_connection_id": "",
+            "psc_connection_status": "",
+            "self_link": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/forwardingRules/rmm-ui-service-http-forwarding-rule",
+            "service_directory_registrations": [],
+            "source_ip_ranges": [],
+            "subnetwork": "",
+            "target": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/targetHttpProxies/rmm-ui-service-http-proxy",
+            "terraform_labels": {},
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "google_compute_target_http_proxy.default",
+            "google_compute_url_map.http_redirect"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_compute_global_forwarding_rule",
+      "name": "https",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "base_forwarding_rule": "",
+            "description": "",
+            "effective_labels": {},
+            "id": "projects/rustymaintenance/global/forwardingRules/rmm-ui-service-https-forwarding-rule",
+            "ip_address": "34.13.124.115",
+            "ip_protocol": "TCP",
+            "ip_version": "IPV4",
+            "label_fingerprint": "42WmSpB8rSM=",
+            "labels": {},
+            "load_balancing_scheme": "EXTERNAL_MANAGED",
+            "metadata_filters": [],
+            "name": "rmm-ui-service-https-forwarding-rule",
+            "network": "",
+            "no_automate_dns_zone": null,
+            "port_range": "443-443",
+            "project": "rustymaintenance",
+            "psc_connection_id": "",
+            "psc_connection_status": "",
+            "self_link": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/forwardingRules/rmm-ui-service-https-forwarding-rule",
+            "service_directory_registrations": [],
+            "source_ip_ranges": [],
+            "subnetwork": "",
+            "target": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/targetHttpsProxies/rmm-ui-service-https-proxy",
+            "terraform_labels": {},
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "google_compute_backend_service.default",
+            "google_compute_managed_ssl_certificate.default",
+            "google_compute_region_network_endpoint_group.cloud_run_neg",
+            "google_compute_target_https_proxy.default",
+            "google_compute_url_map.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_compute_managed_ssl_certificate",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "certificate_id": 8296485666162708375,
+            "creation_timestamp": "2025-11-10T10:39:52.251-08:00",
+            "description": "",
+            "expire_time": "2026-02-08T13:54:01.000-08:00",
+            "id": "projects/rustymaintenance/global/sslCertificates/rustymaintenanceman-com-ssl-cert",
+            "managed": [
+              {
+                "domains": [
+                  "rustymaintenanceman.com"
+                ]
+              }
+            ],
+            "name": "rustymaintenanceman-com-ssl-cert",
+            "project": "rustymaintenance",
+            "self_link": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/sslCertificates/rustymaintenanceman-com-ssl-cert",
+            "subject_alternative_names": [
+              "rustymaintenanceman.com"
+            ],
+            "timeouts": null,
+            "type": "MANAGED"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDB9fQ==",
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_compute_region_network_endpoint_group",
+      "name": "cloud_run_neg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "app_engine": [],
+            "cloud_function": [],
+            "cloud_run": [
+              {
+                "service": "rmm-ui-service",
+                "tag": "",
+                "url_mask": ""
+              }
+            ],
+            "description": "",
+            "id": "projects/rustymaintenance/regions/us-central1/networkEndpointGroups/rmm-ui-service-neg",
+            "name": "rmm-ui-service-neg",
+            "network": "",
+            "network_endpoint_type": "SERVERLESS",
+            "project": "rustymaintenance",
+            "psc_target_service": "",
+            "region": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/regions/us-central1",
+            "self_link": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/regions/us-central1/networkEndpointGroups/rmm-ui-service-neg",
+            "subnetwork": "",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDB9fQ=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_compute_target_http_proxy",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "creation_timestamp": "2025-11-10T10:37:21.967-08:00",
+            "description": "",
+            "http_keep_alive_timeout_sec": 0,
+            "id": "projects/rustymaintenance/global/targetHttpProxies/rmm-ui-service-http-proxy",
+            "name": "rmm-ui-service-http-proxy",
+            "project": "rustymaintenance",
+            "proxy_bind": false,
+            "proxy_id": 1302395685374496270,
+            "self_link": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/targetHttpProxies/rmm-ui-service-http-proxy",
+            "timeouts": null,
+            "url_map": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/urlMaps/rmm-ui-service-http-redirect"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "google_compute_url_map.http_redirect"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_compute_target_https_proxy",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "certificate_manager_certificates": [],
+            "certificate_map": "",
+            "creation_timestamp": "2025-11-10T10:41:07.426-08:00",
+            "description": "",
+            "http_keep_alive_timeout_sec": 0,
+            "id": "projects/rustymaintenance/global/targetHttpsProxies/rmm-ui-service-https-proxy",
+            "name": "rmm-ui-service-https-proxy",
+            "project": "rustymaintenance",
+            "proxy_bind": false,
+            "proxy_id": 6232115863042887468,
+            "quic_override": "NONE",
+            "self_link": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/targetHttpsProxies/rmm-ui-service-https-proxy",
+            "server_tls_policy": "",
+            "ssl_certificates": [
+              "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/sslCertificates/rustymaintenanceman-com-ssl-cert"
+            ],
+            "ssl_policy": "",
+            "timeouts": null,
+            "tls_early_data": "DISABLED",
+            "url_map": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/urlMaps/rmm-ui-service-url-map"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "google_compute_backend_service.default",
+            "google_compute_managed_ssl_certificate.default",
+            "google_compute_region_network_endpoint_group.cloud_run_neg",
+            "google_compute_url_map.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_compute_url_map",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "creation_timestamp": "2025-11-10T10:40:56.096-08:00",
+            "default_route_action": [],
+            "default_service": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/backendServices/rmm-ui-service-backend",
+            "default_url_redirect": [],
+            "description": "URL map for rmm-ui-service",
+            "fingerprint": "RNGwaAxH2AU=",
+            "header_action": [],
+            "host_rule": [],
+            "id": "projects/rustymaintenance/global/urlMaps/rmm-ui-service-url-map",
+            "map_id": 8056445170964467544,
+            "name": "rmm-ui-service-url-map",
+            "path_matcher": [],
+            "project": "rustymaintenance",
+            "self_link": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/urlMaps/rmm-ui-service-url-map",
+            "test": [],
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "google_compute_backend_service.default",
+            "google_compute_region_network_endpoint_group.cloud_run_neg"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_compute_url_map",
+      "name": "http_redirect",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "creation_timestamp": "2025-11-10T10:37:10.730-08:00",
+            "default_route_action": [],
+            "default_service": "",
+            "default_url_redirect": [
+              {
+                "host_redirect": "",
+                "https_redirect": true,
+                "path_redirect": "",
+                "prefix_redirect": "",
+                "redirect_response_code": "MOVED_PERMANENTLY_DEFAULT",
+                "strip_query": false
+              }
+            ],
+            "description": "",
+            "fingerprint": "vxtPcrUYV_g=",
+            "header_action": [],
+            "host_rule": [],
+            "id": "projects/rustymaintenance/global/urlMaps/rmm-ui-service-http-redirect",
+            "map_id": 46020251241909817,
+            "name": "rmm-ui-service-http-redirect",
+            "path_matcher": [],
+            "project": "rustymaintenance",
+            "self_link": "https://www.googleapis.com/compute/v1/projects/rustymaintenance/global/urlMaps/rmm-ui-service-http-redirect",
+            "test": [],
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19"
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_project_service",
+      "name": "service_networking",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "disable_dependent_services": null,
+            "disable_on_destroy": false,
+            "id": "rustymaintenance/servicenetworking.googleapis.com",
+            "project": "rustymaintenance",
+            "service": "servicenetworking.googleapis.com",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInJlYWQiOjYwMDAwMDAwMDAwMCwidXBkYXRlIjoxMjAwMDAwMDAwMDAwfX0="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_project_service",
+      "name": "sql_component",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "disable_dependent_services": null,
+            "disable_on_destroy": false,
+            "id": "rustymaintenance/sql-component.googleapis.com",
+            "project": "rustymaintenance",
+            "service": "sql-component.googleapis.com",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInJlYWQiOjYwMDAwMDAwMDAwMCwidXBkYXRlIjoxMjAwMDAwMDAwMDAwfX0="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_project_service",
+      "name": "vpc_access",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "disable_dependent_services": null,
+            "disable_on_destroy": false,
+            "id": "rustymaintenance/vpcaccess.googleapis.com",
+            "project": "rustymaintenance",
+            "service": "vpcaccess.googleapis.com",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInJlYWQiOjYwMDAwMDAwMDAwMCwidXBkYXRlIjoxMjAwMDAwMDAwMDAwfX0="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_service_networking_connection",
+      "name": "private_vpc_connection",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "deletion_policy": null,
+            "id": "projects%2Frustymaintenance%2Fglobal%2Fnetworks%2Fdefault:servicenetworking.googleapis.com",
+            "network": "projects/rustymaintenance/global/networks/default",
+            "peering": "servicenetworking-googleapis-com",
+            "reserved_peering_ranges": [
+              "cloud-sql-private-ip-range"
+            ],
+            "service": "servicenetworking.googleapis.com",
+            "timeouts": null,
+            "update_on_creation_fail": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "google_compute_global_address.private_ip_address",
+            "google_project_service.service_networking"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_sql_database",
+      "name": "vehicle_db",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "charset": "UTF8",
+            "collation": "en_US.UTF8",
+            "deletion_policy": "DELETE",
+            "id": "projects/rustymaintenance/instances/rmm-vehicle-db-instance/databases/rmm_vehicle_db",
+            "instance": "rmm-vehicle-db-instance",
+            "name": "rmm_vehicle_db",
+            "project": "rustymaintenance",
+            "self_link": "https://sqladmin.googleapis.com/sql/v1beta4/projects/rustymaintenance/instances/rmm-vehicle-db-instance/databases/rmm_vehicle_db",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "google_compute_global_address.private_ip_address",
+            "google_project_service.service_networking",
+            "google_project_service.sql_component",
+            "google_service_networking_connection.private_vpc_connection",
+            "google_sql_database_instance.vehicle_db"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_sql_database_instance",
+      "name": "vehicle_db",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "available_maintenance_versions": [],
+            "clone": [],
+            "connection_name": "rustymaintenance:us-central1:rmm-vehicle-db-instance",
+            "database_version": "POSTGRES_15",
+            "deletion_protection": true,
+            "dns_name": "",
+            "encryption_key_name": null,
+            "first_ip_address": "10.17.0.3",
+            "id": "rmm-vehicle-db-instance",
+            "instance_type": "CLOUD_SQL_INSTANCE",
+            "ip_address": [
+              {
+                "ip_address": "10.17.0.3",
+                "time_to_retire": "",
+                "type": "PRIVATE"
+              }
+            ],
+            "maintenance_version": "POSTGRES_15_14.R20251004.01_14",
+            "master_instance_name": "",
+            "name": "rmm-vehicle-db-instance",
+            "private_ip_address": "10.17.0.3",
+            "project": "rustymaintenance",
+            "psc_service_attachment_link": "",
+            "public_ip_address": "",
+            "region": "us-central1",
+            "replica_configuration": [],
+            "restore_backup_context": [],
+            "root_password": null,
+            "self_link": "https://sqladmin.googleapis.com/sql/v1beta4/projects/rustymaintenance/instances/rmm-vehicle-db-instance",
+            "server_ca_cert": [
+              {
+                "cert": "-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyRkZGU4\nOWM3My0yNDRlLTRkZjMtOWFmNS0zNTY0ZDIwOGFjODMxIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjUxMTExMTM1MTQ4WhcNMzUxMTA5MTM1MjQ4WjB3MS0wKwYD\nVQQuEyRkZGU4OWM3My0yNDRlLTRkZjMtOWFmNS0zNTY0ZDIwOGFjODMxIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQCIQAYGKdwvPoNC+LUHVXLX3BaJYoQIlGIG8ElQccyh/bAlzuy5vNjpCKK7pdsH\nD9OCY/XFOeATL6kqtTiulM7/rFEZbKfpn3IgHgLzJI1uwltQYvY+xkWNulbN3I7B\nao37RODsw1q8m27YqLmkISGRGQqrM0lGtp222r95maoMhLiaB/CZ46N0ngo+qxtw\n3GAUlsjrNKRHlrNltN5hXrIzn58URmpnQUYZz6PYDeglKLaJcgmgxfAe6bNFTTpy\nqfEnbtO/TEQLUndhlksrTNY2xNAcypwaPjf5YERQVOC7mErYX5k7373BgVEtzhKq\nG/VrJBlOiNmtJwAqho19j/7dAgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAHF6wjVjP5mUh/hxx+12eSlwv4K1qRMb3I/pD+wu\nhWfDnF5E61ofPW9aOWsrWIEZGejK+r8Cc9QeCi68T5bCTlKGZXj/IM0iUz5VWejk\n1+9ZIio/3AeBEQp2QpxvbUavF987Mj0rYwW3EQzUbz/WO4gRQkSv2DFJcCTiV4d3\nHMOzL0Gn/Unn09Kdiliq/UWtpwBpRcTG7/M/rlRdWCTbwsSMK5AI2oNownBzfsQr\nbsOmgZFj7PkCpC7IQGxNWVvQhH+YkIGUkcvaWAajYOGxE9MBQSvyoD3Vy8pNNFFi\nAYPW0dtXkevHZ9g9zT7W+KkeA4NwjeMsHbLPjWdse4K+fxE=\n-----END CERTIFICATE-----",
+                "common_name": "C=US,O=Google\\, Inc,CN=Google Cloud SQL Server CA,dnQualifier=dde89c73-244e-4df3-9af5-3564d208ac83",
+                "create_time": "2025-11-11T13:51:48.490Z",
+                "expiration_time": "2035-11-09T13:52:48.490Z",
+                "sha1_fingerprint": "fa7f73e4aa662a6372d27d10b960200eb2b83867"
+              }
+            ],
+            "service_account_email_address": "p181584542508-wrm5jc@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+            "settings": [
+              {
+                "activation_policy": "ALWAYS",
+                "active_directory_config": [],
+                "advanced_machine_features": [],
+                "availability_type": "ZONAL",
+                "backup_configuration": [
+                  {
+                    "backup_retention_settings": [
+                      {
+                        "retained_backups": 7,
+                        "retention_unit": "COUNT"
+                      }
+                    ],
+                    "binary_log_enabled": false,
+                    "enabled": true,
+                    "location": "",
+                    "point_in_time_recovery_enabled": false,
+                    "start_time": "03:00",
+                    "transaction_log_retention_days": 7
+                  }
+                ],
+                "collation": "",
+                "connector_enforcement": "NOT_REQUIRED",
+                "data_cache_config": [],
+                "database_flags": [
+                  {
+                    "name": "max_connections",
+                    "value": "25"
+                  }
+                ],
+                "deletion_protection_enabled": false,
+                "deny_maintenance_period": [],
+                "disk_autoresize": true,
+                "disk_autoresize_limit": 0,
+                "disk_size": 10,
+                "disk_type": "PD_SSD",
+                "edition": "ENTERPRISE",
+                "enable_dataplex_integration": false,
+                "enable_google_ml_integration": false,
+                "insights_config": [],
+                "ip_configuration": [
+                  {
+                    "allocated_ip_range": "",
+                    "authorized_networks": [],
+                    "enable_private_path_for_google_cloud_services": true,
+                    "ipv4_enabled": false,
+                    "private_network": "projects/rustymaintenance/global/networks/default",
+                    "psc_config": [],
+                    "require_ssl": false,
+                    "server_ca_mode": "GOOGLE_MANAGED_INTERNAL_CA",
+                    "ssl_mode": ""
+                  }
+                ],
+                "location_preference": [
+                  {
+                    "follow_gae_application": "",
+                    "secondary_zone": "",
+                    "zone": "us-central1-c"
+                  }
+                ],
+                "maintenance_window": [
+                  {
+                    "day": 7,
+                    "hour": 4,
+                    "update_track": "stable"
+                  }
+                ],
+                "password_validation_policy": [],
+                "pricing_plan": "PER_USE",
+                "sql_server_audit_config": [],
+                "tier": "db-f1-micro",
+                "time_zone": "",
+                "user_labels": {},
+                "version": 2
+              }
+            ],
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo1NDAwMDAwMDAwMDAwLCJkZWxldGUiOjU0MDAwMDAwMDAwMDAsInVwZGF0ZSI6NTQwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "google_compute_global_address.private_ip_address",
+            "google_project_service.service_networking",
+            "google_project_service.sql_component",
+            "google_service_networking_connection.private_vpc_connection"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_vpc_access_connector",
+      "name": "cloud_run_connector",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "connected_projects": [],
+            "id": "projects/rustymaintenance/locations/us-central1/connectors/rmm-ui-service-connector",
+            "ip_cidr_range": "10.8.0.0/28",
+            "machine_type": "e2-micro",
+            "max_instances": 3,
+            "max_throughput": 300,
+            "min_instances": 2,
+            "min_throughput": 200,
+            "name": "rmm-ui-service-connector",
+            "network": "default",
+            "project": "rustymaintenance",
+            "region": "us-central1",
+            "self_link": "projects/rustymaintenance/locations/us-central1/connectors/rmm-ui-service-connector",
+            "state": "ERROR",
+            "subnet": [],
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjAifQ==",
+          "dependencies": [
+            "google_project_service.vpc_access"
+          ]
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

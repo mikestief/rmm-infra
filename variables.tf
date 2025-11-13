@@ -28,3 +28,21 @@ variable "cloud_run_service_location" {
   default     = "us-central1"
 }
 
+variable "db_tier" {
+  description = "Cloud SQL instance tier"
+  type        = string
+  default     = "db-f1-micro"
+}
+
+variable "db_region" {
+  description = "Region for Cloud SQL instance"
+  type        = string
+  default     = "us-central1"
+}
+
+variable "db_name" {
+  description = "Name of the database"
+  type        = string
+  default     = "rmm_vehicle_db"
+}
+

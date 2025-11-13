@@ -11,6 +11,26 @@ resource "google_cloud_run_v2_service" "default" {
   template {
     containers {
       image = "gcr.io/cloudrun/hello" # Placeholder - actual image managed by CI/CD
+
+      # Mount Cloud SQL Unix socket
+      volume_mounts {
+        name       = "cloudsql"
+        mount_path = "/cloudsql"
+      }
+    }
+
+    # VPC connector for private Cloud SQL access
+    vpc_access {
+      connector = google_vpc_access_connector.cloud_run_connector.id
+      egress    = "PRIVATE_RANGES_ONLY"
+    }
+
+    # Cloud SQL connection via Unix socket
+    volumes {
+      name = "cloudsql"
+      cloud_sql_instance {
+        instances = [google_sql_database_instance.vehicle_db.connection_name]
+      }
     }
   }
 
