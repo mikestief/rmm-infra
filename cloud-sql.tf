@@ -51,3 +51,10 @@ resource "google_sql_database_instance" "vehicle_db" {
   }
 }
 
+# IAM role binding for Cloud SQL client access
+resource "google_project_iam_member" "cloudsql_client" {
+  project = var.project_id
+  role    = "roles/cloudsql.client"
+  member  = "user:dstief1980@gmail.com"
+}
+

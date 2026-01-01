@@ -12,3 +12,10 @@ resource "google_sql_database" "vehicle_db" {
 #   password = var.db_password # Store in Secret Manager or use random_password
 # }
 
+# IAM database user for dstief1980@gmail.com
+resource "google_sql_user" "iam_user" {
+  name     = "dstief1980@gmail.com"
+  instance = google_sql_database_instance.vehicle_db.name
+  type     = "CLOUD_IAM_USER"
+}
+
