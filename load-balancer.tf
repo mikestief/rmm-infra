@@ -1,5 +1,5 @@
-# Network Endpoint Group (NEG) for Cloud Run service
-resource "google_compute_region_network_endpoint_group" "cloud_run_neg" {
+# Network Endpoint Group (NEG) for UI Cloud Run service
+resource "google_compute_region_network_endpoint_group" "ui_neg" {
   name                  = "${var.cloud_run_service_name}-neg"
   network_endpoint_type = "SERVERLESS"
   region                = var.cloud_run_service_location
@@ -8,8 +8,18 @@ resource "google_compute_region_network_endpoint_group" "cloud_run_neg" {
   }
 }
 
-# Backend service pointing to Cloud Run NEG
-resource "google_compute_backend_service" "default" {
+# Network Endpoint Group (NEG) for Vehicle API Cloud Run service
+resource "google_compute_region_network_endpoint_group" "vehicle_api_neg" {
+  name                  = "${var.vehicle_api_service_name}-neg"
+  network_endpoint_type = "SERVERLESS"
+  region                = var.vehicle_api_service_location
+  cloud_run {
+    service = var.vehicle_api_service_name
+  }
+}
+
+# Backend service for UI
+resource "google_compute_backend_service" "ui_backend" {
   name                  = "${var.cloud_run_service_name}-backend"
   description           = "Backend service for ${var.cloud_run_service_name}"
   protocol              = "HTTP"
@@ -19,7 +29,29 @@ resource "google_compute_backend_service" "default" {
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
   backend {
-    group = google_compute_region_network_endpoint_group.cloud_run_neg.id
+    group = google_compute_region_network_endpoint_group.ui_neg.id
+  }
+
+  log_config {
+    enable      = true
+    sample_rate = 1.0
+  }
+
+  # Health checks are not supported for serverless NEG backends (Cloud Run)
+}
+
+# Backend service for Vehicle API
+resource "google_compute_backend_service" "vehicle_api_backend" {
+  name                  = "${var.vehicle_api_service_name}-backend"
+  description           = "Backend service for ${var.vehicle_api_service_name}"
+  protocol              = "HTTP"
+  port_name             = "http"
+  timeout_sec           = 30
+  enable_cdn            = false
+  load_balancing_scheme = "EXTERNAL_MANAGED"
+
+  backend {
+    group = google_compute_region_network_endpoint_group.vehicle_api_neg.id
   }
 
   log_config {
@@ -46,11 +78,36 @@ resource "google_compute_managed_ssl_certificate" "default" {
   }
 }
 
-# URL map routing all traffic to backend service
+# URL map with path-based routing
 resource "google_compute_url_map" "default" {
   name            = "${var.cloud_run_service_name}-url-map"
-  description     = "URL map for ${var.cloud_run_service_name}"
-  default_service = google_compute_backend_service.default.id
+  description     = "URL map with path-based routing"
+  default_service = google_compute_backend_service.ui_backend.id
+
+  host_rule {
+    hosts        = [var.domain]
+    path_matcher = "path-matcher"
+  }
+
+  path_matcher {
+    name            = "path-matcher"
+    default_service = google_compute_backend_service.ui_backend.id
+
+    # Route vehicle API requests to vehicle API service
+    # Match both /api/vehicles and /api/v1/vehicles paths
+    path_rule {
+      paths   = ["/api/vehicles", "/api/vehicles/*", "/api/v1/vehicles", "/api/v1/vehicles/*"]
+      service = google_compute_backend_service.vehicle_api_backend.id
+    }
+
+    # Route auth requests to UI service (handles OAuth)
+    path_rule {
+      paths   = ["/api/auth/*"]
+      service = google_compute_backend_service.ui_backend.id
+    }
+
+    # All other paths go to UI service (static files and SPA)
+  }
 }
 
 # URL map for HTTP to HTTPS redirect

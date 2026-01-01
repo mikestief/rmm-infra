@@ -28,6 +28,18 @@ variable "cloud_run_service_location" {
   default     = "us-central1"
 }
 
+variable "vehicle_api_service_name" {
+  description = "Name of the Vehicle API Cloud Run service"
+  type        = string
+  default     = "rmm-vehicle-api-service"
+}
+
+variable "vehicle_api_service_location" {
+  description = "Location of the Vehicle API Cloud Run service"
+  type        = string
+  default     = "us-central1"
+}
+
 variable "db_tier" {
   description = "Cloud SQL instance tier"
   type        = string
