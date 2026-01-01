@@ -22,3 +22,10 @@ output "database_name" {
   value       = google_sql_database.vehicle_db.name
 }
 
+# Postgres superuser password
+output "postgres_password" {
+  description = "Password for the postgres superuser"
+  value       = random_password.postgres_password.result
+  sensitive   = true
+}
+

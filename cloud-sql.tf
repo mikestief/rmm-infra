@@ -38,6 +38,12 @@ resource "google_sql_database_instance" "vehicle_db" {
       value = "25" # db-f1-micro has limited connections
     }
 
+    # Enable IAM database authentication
+    database_flags {
+      name  = "cloudsql.iam_authentication"
+      value = "on"
+    }
+
     # Minimal maintenance window
     maintenance_window {
       day          = 7 # Sunday
