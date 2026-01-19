@@ -44,8 +44,8 @@ terraform import google_cloud_run_v2_service.ui_service \
   projects/rustymaintenance/locations/us-central1/services/rmm-ui-service
 
 # Import vehicle API service
-terraform import google_cloud_run_v2_service.ui_service \
-  projects/rustymaintenance/locations/us-central1/services/rmm-ui-service
+terraform import google_cloud_run_v2_service.vehicle_api_service \
+  projects/rustymaintenance/locations/us-central1/services/rmm-vehicle-api-service
 
 ```
 

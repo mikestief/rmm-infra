@@ -3,6 +3,8 @@
 # If you need to import it, run:
 # terraform import google_cloud_run_v2_service.ui_service projects/rustymaintenance/locations/us-central1/services/rmm-ui-service
 
+data "google_project" "current" {}
+
 resource "google_cloud_run_v2_service" "ui_service" {
   name     = var.cloud_run_service_name
   location = var.cloud_run_service_location
@@ -41,6 +43,10 @@ resource "google_cloud_run_v2_service" "ui_service" {
 
   lifecycle {
     ignore_changes = [
+      client,
+      client_version,
+      template[0].labels,
+      template[0].annotations,
       template[0].containers[0].image,
       template[0].containers[0].env,
       template[0].containers[0].resources,
@@ -49,6 +55,16 @@ resource "google_cloud_run_v2_service" "ui_service" {
       template[0].containers[0].command,
     ]
   }
+}
+
+# Allow the External HTTP(S) Load Balancer (serverless NEG) to invoke the UI service
+resource "google_cloud_run_v2_service_iam_member" "ui_invoker_lb" {
+  project  = data.google_project.current.project_id
+  location = google_cloud_run_v2_service.ui_service.location
+  name     = google_cloud_run_v2_service.ui_service.name
+
+  role   = "roles/run.invoker"
+  member = "allUsers"
 }
 
 # Vehicle API Cloud Run service ingress configuration
@@ -94,6 +110,10 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
 
   lifecycle {
     ignore_changes = [
+      client,
+      client_version,
+      template[0].labels,
+      template[0].annotations,
       template[0].containers[0].image,
       template[0].containers[0].env,
       template[0].containers[0].resources,
@@ -104,3 +124,12 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
   }
 }
 
+# Allow the External HTTP(S) Load Balancer (serverless NEG) to invoke the Vehicle API service
+resource "google_cloud_run_v2_service_iam_member" "vehicle_api_invoker_lb" {
+  project  = data.google_project.current.project_id
+  location = google_cloud_run_v2_service.vehicle_api_service.location
+  name     = google_cloud_run_v2_service.vehicle_api_service.name
+
+  role   = "roles/run.invoker"
+  member = "allUsers"
+}

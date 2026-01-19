@@ -42,4 +42,3 @@ resource "google_sql_user" "iam_user" {
 # GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO "dstief1980@gmail.com";
 # ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO "dstief1980@gmail.com";
 # ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO "dstief1980@gmail.com";
-
