@@ -93,12 +93,9 @@ resource "google_compute_url_map" "default" {
     name            = "path-matcher"
     default_service = google_compute_backend_service.ui_backend.id
 
-    # Route vehicle API requests to vehicle API service
-    # Match both /api/vehicles and /api/v1/vehicles paths
-    path_rule {
-      paths   = ["/api/vehicles", "/api/vehicles/*", "/api/v1/vehicles", "/api/v1/vehicles/*"]
-      service = google_compute_backend_service.vehicle_api_backend.id
-    }
+    # Level 2 BFF: Vehicle API requests now go to UI service (BFF proxy).
+    # The UI service forwards calls server-to-server using Cloud Run IAM.
+    # No public routing to Vehicle API; it's only callable by UI service account.
 
     # Route auth requests to UI service (handles OAuth)
     path_rule {
@@ -106,7 +103,7 @@ resource "google_compute_url_map" "default" {
       service = google_compute_backend_service.ui_backend.id
     }
 
-    # All other paths go to UI service (static files and SPA)
+    # All other paths (including /api/v1/vehicles*) go to UI service (BFF + static files + SPA)
   }
 }
 

@@ -75,7 +75,9 @@ resource "google_cloud_run_v2_service_iam_member" "ui_invoker_lb" {
 resource "google_cloud_run_v2_service" "vehicle_api_service" {
   name     = var.vehicle_api_service_name
   location = var.vehicle_api_service_location
-  ingress  = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
+  # Level 2 BFF: Allow all ingress but require IAM authentication.
+  # Only the UI service account has roles/run.invoker, so only it can call this API.
+  ingress = "INGRESS_TRAFFIC_ALL"
 
   template {
     containers {
@@ -124,12 +126,13 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
   }
 }
 
-# Allow the External HTTP(S) Load Balancer (serverless NEG) to invoke the Vehicle API service
-resource "google_cloud_run_v2_service_iam_member" "vehicle_api_invoker_lb" {
+# Level 2 BFF: Vehicle API is private; only the UI service account can invoke it.
+# The UI service calls the API server-to-server using a Google-signed ID token.
+resource "google_cloud_run_v2_service_iam_member" "vehicle_api_invoker_ui" {
   project  = data.google_project.current.project_id
   location = google_cloud_run_v2_service.vehicle_api_service.location
   name     = google_cloud_run_v2_service.vehicle_api_service.name
 
   role   = "roles/run.invoker"
-  member = "allUsers"
+  member = "serviceAccount:rmm-ui-service@${data.google_project.current.project_id}.iam.gserviceaccount.com"
 }
