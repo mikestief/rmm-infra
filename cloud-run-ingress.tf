@@ -80,6 +80,8 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
   ingress = "INGRESS_TRAFFIC_ALL"
 
   template {
+    service_account = google_service_account.vehicle_api.email
+
     containers {
       image = "gcr.io/cloudrun/hello" # Placeholder - actual image managed by CI/CD
 
@@ -87,6 +89,12 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
       volume_mounts {
         name       = "cloudsql"
         mount_path = "/cloudsql"
+      }
+
+      # Environment variables
+      env {
+        name  = "RECEIPT_BUCKET_NAME"
+        value = "rmm-receipts-${data.google_project.current.project_id}"
       }
     }
 
@@ -103,6 +111,9 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
         instances = [google_sql_database_instance.vehicle_db.connection_name]
       }
     }
+    
+
+
   }
 
   traffic {
