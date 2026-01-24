@@ -80,7 +80,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
   ingress = "INGRESS_TRAFFIC_ALL"
 
   template {
-    service_account = google_service_account.vehicle_api.email
+    service_account = "rmm-vehicle-api-sa@rustymaintenance.iam.gserviceaccount.com"
 
     containers {
       image = "gcr.io/cloudrun/hello" # Placeholder - actual image managed by CI/CD
@@ -95,6 +95,11 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
       env {
         name  = "RECEIPT_BUCKET_NAME"
         value = "rmm-receipts-${data.google_project.current.project_id}"
+      }
+
+      env {
+        name  = "DATABASE_URL"
+        value = "postgresql://rmm-vehicle-api-sa%40rustymaintenance.iam.gserviceaccount.com@/rmm_vehicle_db?host=/cloudsql/${google_sql_database_instance.vehicle_db.connection_name}"
       }
     }
 
@@ -128,7 +133,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
       template[0].labels,
       template[0].annotations,
       template[0].containers[0].image,
-      template[0].containers[0].env,
+      # template[0].containers[0].env, # Managed by Terraform now
       template[0].containers[0].resources,
       template[0].containers[0].ports,
       template[0].containers[0].args,
