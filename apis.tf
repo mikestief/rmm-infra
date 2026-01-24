@@ -20,3 +20,15 @@ resource "google_project_service" "sql_component" {
   disable_on_destroy = false
 }
 
+# GCS and IAM Credentials for Receipt functionality
+resource "google_project_service" "storage_api" {
+  project = var.project_id
+  service = "storage.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "iam_credentials" {
+  project = var.project_id
+  service = "iamcredentials.googleapis.com"
+  disable_on_destroy = false
+}

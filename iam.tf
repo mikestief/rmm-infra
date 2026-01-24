@@ -9,3 +9,10 @@ resource "google_storage_bucket_iam_member" "vehicle_api_storage_admin" {
   role   = "roles/storage.objectAdmin"
   member = "serviceAccount:${google_service_account.vehicle_api.email}"
 }
+
+# Grant Cloud SQL Client role to allow connection to Cloud SQL instances
+resource "google_project_iam_member" "vehicle_api_cloudsql_client" {
+  project = var.project_id
+  role    = "roles/cloudsql.client"
+  member  = "serviceAccount:${google_service_account.vehicle_api.email}"
+}
