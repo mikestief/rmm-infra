@@ -50,3 +50,16 @@ resource "google_sql_user" "iam_user" {
 # GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO "dstief1980@gmail.com";
 # ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO "dstief1980@gmail.com";
 # ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO "dstief1980@gmail.com";
+
+# Database for Places API
+resource "google_sql_database" "places_db" {
+  name     = "rmm_home_db"
+  instance = google_sql_database_instance.vehicle_db.name
+}
+
+# IAM database user for Places API Service Account
+resource "google_sql_user" "places_api_sa_user" {
+  name     = replace(google_service_account.places_api.email, ".gserviceaccount.com", "")
+  instance = google_sql_database_instance.vehicle_db.name
+  type     = "CLOUD_IAM_SERVICE_ACCOUNT"
+}

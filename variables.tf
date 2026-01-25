@@ -43,7 +43,7 @@ variable "vehicle_api_service_location" {
 variable "db_tier" {
   description = "Cloud SQL instance tier"
   type        = string
-  default     = "db-f1-micro"
+  default     = "db-custom-2-13312" # N2 machine - 2 vCPU, 13 GB RAM (6.5 GB per vCPU max)
 }
 
 variable "db_region" {

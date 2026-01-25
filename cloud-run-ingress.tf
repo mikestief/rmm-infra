@@ -152,3 +152,70 @@ resource "google_cloud_run_v2_service_iam_member" "vehicle_api_invoker_ui" {
   role   = "roles/run.invoker"
   member = "serviceAccount:rmm-ui-service@${data.google_project.current.project_id}.iam.gserviceaccount.com"
 }
+
+# Places API Cloud Run service
+resource "google_cloud_run_v2_service" "places_api_service" {
+  name     = "rmm-places-api-service"
+  location = var.region
+  
+  # Private service, only invoked by UI BFF
+  ingress = "INGRESS_TRAFFIC_ALL"
+
+  template {
+    service_account = "rmm-places-api-sa@rustymaintenance.iam.gserviceaccount.com"
+
+    containers {
+      image = "gcr.io/cloudrun/hello" # Placeholder
+
+      # Mount Cloud SQL Unix socket
+      volume_mounts {
+        name       = "cloudsql"
+        mount_path = "/cloudsql"
+      }
+
+      # Environment variables
+      env {
+        name  = "DATABASE_URL"
+        value = "postgresql://rmm-places-api-sa%40rustymaintenance.iam.gserviceaccount.com@/rmm_home_db?host=/cloudsql/${google_sql_database_instance.vehicle_db.connection_name}"
+      }
+    }
+
+    # VPC connector
+    vpc_access {
+      connector = google_vpc_access_connector.cloud_run_connector.id
+      egress    = "PRIVATE_RANGES_ONLY"
+    }
+
+    # Cloud SQL
+    volumes {
+      name = "cloudsql"
+      cloud_sql_instance {
+        instances = [google_sql_database_instance.vehicle_db.connection_name]
+      }
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      client,
+      client_version,
+      template[0].labels,
+      template[0].annotations,
+      template[0].containers[0].image,
+      template[0].containers[0].resources,
+      template[0].containers[0].ports,
+      template[0].containers[0].args,
+      template[0].containers[0].command,
+    ]
+  }
+}
+
+# Allow UI service to invoke Places API
+resource "google_cloud_run_v2_service_iam_member" "places_api_invoker_ui" {
+  project  = data.google_project.current.project_id
+  location = google_cloud_run_v2_service.places_api_service.location
+  name     = google_cloud_run_v2_service.places_api_service.name
+
+  role   = "roles/run.invoker"
+  member = "serviceAccount:rmm-ui-service@${data.google_project.current.project_id}.iam.gserviceaccount.com"
+}

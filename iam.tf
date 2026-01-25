@@ -32,3 +32,23 @@ resource "google_project_iam_member" "vehicle_api_secret_accessor" {
   role    = "roles/secretmanager.secretAccessor"
   member  = "serviceAccount:rmm-vehicle-api-sa@${var.project_id}.iam.gserviceaccount.com"
 }
+
+# Service Account for Places API
+resource "google_service_account" "places_api" {
+  account_id   = "rmm-places-api-sa"
+  display_name = "Places API Service Account"
+}
+
+# Grant Cloud SQL Client role to allow connection to Cloud SQL instances
+resource "google_project_iam_member" "places_api_cloudsql_client" {
+  project = var.project_id
+  role    = "roles/cloudsql.client"
+  member  = "serviceAccount:${google_service_account.places_api.email}"
+}
+
+# Grant Secret Manager Accessor role to fetch JWT keys
+resource "google_project_iam_member" "places_api_secret_accessor" {
+  project = var.project_id
+  role    = "roles/secretmanager.secretAccessor"
+  member  = "serviceAccount:${google_service_account.places_api.email}"
+}

@@ -32,3 +32,10 @@ resource "google_project_service" "iam_credentials" {
   service = "iamcredentials.googleapis.com"
   disable_on_destroy = false
 }
+
+# Places API
+resource "google_project_service" "places_api" {
+  project = var.project_id
+  service = "places.googleapis.com"
+  disable_on_destroy = false
+}

@@ -35,7 +35,7 @@ resource "google_sql_database_instance" "vehicle_db" {
     # Database flags for optimization
     database_flags {
       name  = "max_connections"
-      value = "25" # db-f1-micro has limited connections
+      value = "100" # Increased for db-custom-2-16384
     }
 
     # Enable IAM database authentication
