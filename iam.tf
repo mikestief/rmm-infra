@@ -46,6 +46,13 @@ resource "google_project_iam_member" "places_api_cloudsql_client" {
   member  = "serviceAccount:${google_service_account.places_api.email}"
 }
 
+# Grant Cloud SQL Instance User role for IAM Authentication login
+resource "google_project_iam_member" "places_api_cloudsql_instance_user" {
+  project = var.project_id
+  role    = "roles/cloudsql.instanceUser"
+  member  = "serviceAccount:${google_service_account.places_api.email}"
+}
+
 # Grant Secret Manager Accessor role to fetch JWT keys
 resource "google_project_iam_member" "places_api_secret_accessor" {
   project = var.project_id
