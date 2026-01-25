@@ -52,3 +52,10 @@ resource "google_project_iam_member" "places_api_secret_accessor" {
   role    = "roles/secretmanager.secretAccessor"
   member  = "serviceAccount:${google_service_account.places_api.email}"
 }
+
+# Allow GitHub Actions SA to impersonate Places API SA for deployments
+resource "google_service_account_iam_member" "places_api_github_actions_user" {
+  service_account_id = google_service_account.places_api.name
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:github-actions-sa@${var.project_id}.iam.gserviceaccount.com"
+}
