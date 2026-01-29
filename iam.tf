@@ -33,6 +33,13 @@ resource "google_project_iam_member" "vehicle_api_secret_accessor" {
   member  = "serviceAccount:rmm-vehicle-api-sa@${var.project_id}.iam.gserviceaccount.com"
 }
 
+# Grant Cloud SQL Instance User role for IAM Authentication login
+resource "google_project_iam_member" "vehicle_api_cloudsql_instance_user" {
+  project = var.project_id
+  role    = "roles/cloudsql.instanceUser"
+  member  = "serviceAccount:rmm-vehicle-api-sa@${var.project_id}.iam.gserviceaccount.com"
+}
+
 # Service Account for Places API
 resource "google_service_account" "places_api" {
   account_id   = "rmm-places-api-sa"

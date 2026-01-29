@@ -19,6 +19,17 @@ resource "google_cloud_run_v2_service" "ui_service" {
         name       = "cloudsql"
         mount_path = "/cloudsql"
       }
+
+      # Environment variables to point to backend APIs
+      env {
+        name  = "VEHICLE_API_URL"
+        value = google_cloud_run_v2_service.vehicle_api_service.uri
+      }
+    
+      env {
+        name  = "PLACES_API_URL"
+        value = google_cloud_run_v2_service.places_api_service.uri
+      }
     }
 
     # VPC connector for private Cloud SQL access

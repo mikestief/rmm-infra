@@ -34,11 +34,11 @@ resource "google_sql_user" "iam_user" {
 
 # IAM database user for Vehicle API Service Account
 # Note: Cloud SQL requires removing the ".gserviceaccount.com" suffix for the DB user
-# resource "google_sql_user" "vehicle_api_sa_user" {
-#   name     = replace(google_service_account.vehicle_api.email, ".gserviceaccount.com", "")
-#   instance = google_sql_database_instance.vehicle_db.name
-#   type     = "CLOUD_IAM_SERVICE_ACCOUNT"
-# }
+resource "google_sql_user" "vehicle_api_sa_user" {
+  name     = "rmm-vehicle-api-sa@${var.project_id}.iam"
+  instance = google_sql_database_instance.vehicle_db.name
+  type     = "CLOUD_IAM_SERVICE_ACCOUNT"
+}
 
 # Grant database privileges to IAM user
 # After running terraform apply, connect as postgres user using the password from output
