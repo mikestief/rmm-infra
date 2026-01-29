@@ -66,3 +66,17 @@ resource "google_service_account_iam_member" "places_api_github_actions_user" {
   role               = "roles/iam.serviceAccountUser"
   member             = "serviceAccount:github-actions-sa@${var.project_id}.iam.gserviceaccount.com"
 }
+
+# Grant Storage Admin role to allow access to receipts bucket
+resource "google_storage_bucket_iam_member" "places_api_storage_admin" {
+  bucket = google_storage_bucket.receipts.name
+  role   = "roles/storage.objectAdmin"
+  member = "serviceAccount:${google_service_account.places_api.email}"
+}
+
+# Grant Token Creator role to allow signing URLs (self-impersonation)
+resource "google_service_account_iam_member" "places_api_token_creator" {
+  service_account_id = google_service_account.places_api.name
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "serviceAccount:${google_service_account.places_api.email}"
+}

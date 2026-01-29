@@ -85,10 +85,8 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
     containers {
       image = "gcr.io/cloudrun/hello" # Placeholder - actual image managed by CI/CD
 
-      # Mount Cloud SQL Unix socket
-      volume_mounts {
-        name       = "cloudsql"
-        mount_path = "/cloudsql"
+      ports {
+        container_port = 8080
       }
 
       # Environment variables
@@ -99,7 +97,27 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
 
       env {
         name  = "DATABASE_URL"
-        value = "postgresql://rmm-vehicle-api-sa%40rustymaintenance.iam.gserviceaccount.com@/rmm_vehicle_db?host=/cloudsql/${google_sql_database_instance.vehicle_db.connection_name}"
+        value = "postgresql://rmm-vehicle-api-sa%40rustymaintenance.iam@127.0.0.1:5432/rmm_vehicle_db"
+      }
+    }
+
+    # Sidecar for Cloud SQL Auth Proxy
+    containers {
+      name  = "cloud-sql-proxy"
+      image = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.14.2"
+      
+      args = [
+        "--structured-logs",
+        "--port=5432",
+        "--auto-iam-authn",
+        google_sql_database_instance.vehicle_db.connection_name
+      ]
+      
+      resources {
+        limits = {
+          cpu    = "1"
+          memory = "512Mi"
+        }
       }
     }
 
@@ -107,14 +125,6 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
     vpc_access {
       connector = google_vpc_access_connector.cloud_run_connector.id
       egress    = "PRIVATE_RANGES_ONLY"
-    }
-
-    # Cloud SQL connection via Unix socket
-    volumes {
-      name = "cloudsql"
-      cloud_sql_instance {
-        instances = [google_sql_database_instance.vehicle_db.connection_name]
-      }
     }
     
 
@@ -167,31 +177,41 @@ resource "google_cloud_run_v2_service" "places_api_service" {
     containers {
       image = "gcr.io/cloudrun/hello" # Placeholder
 
-      # Mount Cloud SQL Unix socket
-      volume_mounts {
-        name       = "cloudsql"
-        mount_path = "/cloudsql"
+      ports {
+        container_port = 8080
       }
 
       # Environment variables
       env {
         name  = "DATABASE_URL"
-        value = "postgresql://rmm-places-api-sa%40rustymaintenance.iam.gserviceaccount.com@/rmm_home_db?host=/cloudsql/${google_sql_database_instance.vehicle_db.connection_name}"
+        value = "postgresql://rmm-places-api-sa%40rustymaintenance.iam@127.0.0.1:5432/rmm_home_db"
       }
     }
 
-    # VPC connector
+    # Sidecar for Cloud SQL Auth Proxy
+    containers {
+      name  = "cloud-sql-proxy"
+      image = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.14.2"
+      
+      args = [
+        "--structured-logs",
+        "--port=5432",
+        "--auto-iam-authn",
+        google_sql_database_instance.vehicle_db.connection_name
+      ]
+      
+      resources {
+        limits = {
+          cpu    = "1"
+          memory = "512Mi"
+        }
+      }
+    }
+
+    # VPC connector for private Cloud SQL access
     vpc_access {
       connector = google_vpc_access_connector.cloud_run_connector.id
       egress    = "PRIVATE_RANGES_ONLY"
-    }
-
-    # Cloud SQL
-    volumes {
-      name = "cloudsql"
-      cloud_sql_instance {
-        instances = [google_sql_database_instance.vehicle_db.connection_name]
-      }
     }
   }
 
