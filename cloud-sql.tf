@@ -30,6 +30,7 @@ resource "google_sql_database_instance" "vehicle_db" {
       ipv4_enabled                                  = false
       private_network                               = "projects/${var.project_id}/global/networks/default"
       enable_private_path_for_google_cloud_services = true
+      ssl_mode                                      = "ENCRYPTED_ONLY"
     }
 
     # Database flags for optimization
