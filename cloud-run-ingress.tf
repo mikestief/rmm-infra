@@ -48,7 +48,7 @@ resource "google_cloud_run_v2_service" "ui_service" {
       template[0].labels,
       template[0].annotations,
       template[0].containers[0].image,
-      template[0].containers[0].env,
+      # template[0].containers[0].env, # Managed by Terraform now
       template[0].containers[0].resources,
       template[0].containers[0].ports,
       template[0].containers[0].args,
@@ -97,7 +97,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
 
       env {
         name  = "DATABASE_URL"
-        value = "postgresql://rmm-vehicle-api-sa%40rustymaintenance.iam@127.0.0.1:5432/rmm_vehicle_db"
+        value = "postgresql://127.0.0.1:5432/rmm_vehicle_db?user=rmm-vehicle-api-sa%40rustymaintenance.iam"
       }
     }
 
@@ -110,6 +110,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
         "--structured-logs",
         "--port=5432",
         "--auto-iam-authn",
+        "--private-ip",
         google_sql_database_instance.vehicle_db.connection_name
       ]
       
@@ -184,7 +185,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
       # Environment variables
       env {
         name  = "DATABASE_URL"
-        value = "postgresql://rmm-places-api-sa%40rustymaintenance.iam@127.0.0.1:5432/rmm_home_db"
+        value = "postgresql://127.0.0.1:5432/rmm_home_db?user=rmm-places-api-sa%40rustymaintenance.iam"
       }
     }
 
@@ -197,6 +198,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
         "--structured-logs",
         "--port=5432",
         "--auto-iam-authn",
+        "--private-ip",
         google_sql_database_instance.vehicle_db.connection_name
       ]
       
