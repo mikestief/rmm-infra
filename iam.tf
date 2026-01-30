@@ -40,6 +40,13 @@ resource "google_project_iam_member" "vehicle_api_cloudsql_instance_user" {
   member  = "serviceAccount:rmm-vehicle-api-sa@${var.project_id}.iam.gserviceaccount.com"
 }
 
+# Grant Cloud Trace Agent role for OpenTelemetry
+resource "google_project_iam_member" "vehicle_api_trace_agent" {
+  project = var.project_id
+  role    = "roles/cloudtrace.agent"
+  member  = "serviceAccount:rmm-vehicle-api-sa@${var.project_id}.iam.gserviceaccount.com"
+}
+
 # Service Account for Places API
 resource "google_service_account" "places_api" {
   account_id   = "rmm-places-api-sa"
@@ -86,4 +93,11 @@ resource "google_service_account_iam_member" "places_api_token_creator" {
   service_account_id = google_service_account.places_api.name
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${google_service_account.places_api.email}"
+}
+
+# Grant Cloud Trace Agent role for OpenTelemetry
+resource "google_project_iam_member" "places_api_trace_agent" {
+  project = var.project_id
+  role    = "roles/cloudtrace.agent"
+  member  = "serviceAccount:${google_service_account.places_api.email}"
 }
