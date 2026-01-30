@@ -39,3 +39,10 @@ resource "google_project_service" "places_api" {
   service = "places.googleapis.com"
   disable_on_destroy = false
 }
+
+# Cloud Trace API for OpenTelemetry
+resource "google_project_service" "cloud_trace_api" {
+  project = var.project_id
+  service = "cloudtrace.googleapis.com"
+  disable_on_destroy = false
+}
