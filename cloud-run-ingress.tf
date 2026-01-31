@@ -61,6 +61,11 @@ resource "google_cloud_run_v2_service" "ui_service" {
         name  = "NODE_ENV"
         value = "production"
       }
+
+      env {
+        name  = "GOOGLE_CLOUD_PROJECT"
+        value = data.google_project.current.project_id
+      }
     }
 
     # VPC connector for private Cloud SQL access
