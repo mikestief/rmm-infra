@@ -58,3 +58,22 @@ variable "db_name" {
   default     = "rmm_vehicle_db"
 }
 
+variable "iap_client_id" {
+  description = "OAuth2 Client ID for IAP"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "iap_client_secret" {
+  description = "OAuth2 Client Secret for IAP"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "iap_allowed_users" {
+  description = "List of users/groups/serviceAccounts/domains allowed to access the application via IAP"
+  type        = list(string)
+  default     = []
+}

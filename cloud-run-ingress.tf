@@ -8,11 +8,31 @@ data "google_project" "current" {}
 resource "google_cloud_run_v2_service" "ui_service" {
   name     = var.cloud_run_service_name
   location = var.cloud_run_service_location
-  ingress  = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
+  ingress  = "INGRESS_TRAFFIC_ALL"
 
   template {
     containers {
       image = "gcr.io/cloudrun/hello" # Placeholder - actual image managed by CI/CD
+
+      # Health Probes
+      startup_probe {
+        http_get {
+          path = "/health"
+          port = 8080
+        }
+        initial_delay_seconds = 10
+        period_seconds        = 5
+        failure_threshold     = 10
+      }
+
+      liveness_probe {
+        http_get {
+          path = "/health"
+          port = 8080
+        }
+        period_seconds    = 10
+        failure_threshold = 3
+      }
 
       # Mount Cloud SQL Unix socket
       volume_mounts {
