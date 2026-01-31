@@ -130,6 +130,11 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
         name  = "DATABASE_URL"
         value = "postgresql://127.0.0.1:5432/rmm_vehicle_db?user=rmm-vehicle-api-sa%40rustymaintenance.iam"
       }
+
+      env {
+        name  = "JWT_USER_ID_CLAIM"
+        value = "email"
+      }
     }
 
     # Sidecar for Cloud SQL Auth Proxy
@@ -217,6 +222,11 @@ resource "google_cloud_run_v2_service" "places_api_service" {
       env {
         name  = "DATABASE_URL"
         value = "postgresql://127.0.0.1:5432/rmm_home_db?user=rmm-places-api-sa%40rustymaintenance.iam"
+      }
+
+      env {
+        name  = "JWT_USER_ID_CLAIM"
+        value = "email"
       }
     }
 
