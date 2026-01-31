@@ -77,3 +77,9 @@ variable "iap_allowed_users" {
   type        = list(string)
   default     = []
 }
+
+variable "cookie_secret" {
+  description = "Secret used for signing cookies"
+  type        = string
+  sensitive   = true
+}

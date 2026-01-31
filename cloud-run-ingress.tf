@@ -50,6 +50,17 @@ resource "google_cloud_run_v2_service" "ui_service" {
         name  = "PLACES_API_URL"
         value = google_cloud_run_v2_service.places_api_service.uri
       }
+
+      env {
+        name  = "COOKIE_SECRET"
+        value = var.cookie_secret
+      }
+
+
+      env {
+        name  = "NODE_ENV"
+        value = "production"
+      }
     }
 
     # VPC connector for private Cloud SQL access
