@@ -8,7 +8,7 @@ data "google_project" "current" {}
 resource "google_cloud_run_v2_service" "ui_service" {
   name     = var.cloud_run_service_name
   location = var.cloud_run_service_location
-  ingress  = "INGRESS_TRAFFIC_ALL"
+  ingress  = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
 
   template {
     containers {
@@ -49,6 +49,21 @@ resource "google_cloud_run_v2_service" "ui_service" {
       env {
         name  = "PLACES_API_URL"
         value = google_cloud_run_v2_service.places_api_service.uri
+      }
+
+      env {
+        name  = "COOKIE_SECRET"
+        value = var.cookie_secret
+      }
+
+      env {
+        name  = "NODE_ENV"
+        value = "production"
+      }
+
+      env {
+        name  = "GOOGLE_CLOUD_PROJECT"
+        value = data.google_project.current.project_id
       }
     }
 
