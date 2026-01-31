@@ -8,7 +8,7 @@ data "google_project" "current" {}
 resource "google_cloud_run_v2_service" "ui_service" {
   name     = var.cloud_run_service_name
   location = var.cloud_run_service_location
-  ingress  = "INGRESS_TRAFFIC_ALL"
+  ingress  = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
 
   template {
     containers {
