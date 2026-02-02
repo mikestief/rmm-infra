@@ -47,6 +47,20 @@ resource "google_project_iam_member" "vehicle_api_trace_agent" {
   member  = "serviceAccount:rmm-vehicle-api-sa@${var.project_id}.iam.gserviceaccount.com"
 }
 
+# Service Account for UI Service
+# This identity is used by the UI BFF to call other services (Vehicle/Places APIs)
+resource "google_service_account" "ui_service" {
+  account_id   = "rmm-ui-service"
+  display_name = "UI Service Account"
+}
+
+# Grant Secret Manager Accessor role to UI SA (for OAuth secrets and keys)
+resource "google_project_iam_member" "ui_service_secret_accessor" {
+  project = var.project_id
+  role    = "roles/secretmanager.secretAccessor"
+  member  = "serviceAccount:${google_service_account.ui_service.email}"
+}
+
 # Service Account for Places API
 resource "google_service_account" "places_api" {
   account_id   = "rmm-places-api-sa"

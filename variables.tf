@@ -43,7 +43,7 @@ variable "vehicle_api_service_location" {
 variable "db_tier" {
   description = "Cloud SQL instance tier"
   type        = string
-  default     = "db-custom-2-13312" # N2 machine - 2 vCPU, 13 GB RAM (6.5 GB per vCPU max)
+  default     = "db-g1-small"
 }
 
 variable "db_region" {
@@ -76,4 +76,10 @@ variable "iap_allowed_users" {
   description = "List of users/groups/serviceAccounts/domains allowed to access the application via IAP"
   type        = list(string)
   default     = []
+}
+
+variable "cookie_secret" {
+  description = "Secret used for signing cookies"
+  type        = string
+  sensitive   = true
 }

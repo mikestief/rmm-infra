@@ -11,6 +11,8 @@ resource "google_cloud_run_v2_service" "ui_service" {
   ingress  = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
 
   template {
+    service_account = google_service_account.ui_service.email
+
     containers {
       image = "gcr.io/cloudrun/hello" # Placeholder - actual image managed by CI/CD
 
@@ -212,7 +214,7 @@ resource "google_cloud_run_v2_service_iam_member" "vehicle_api_invoker_ui" {
   name     = google_cloud_run_v2_service.vehicle_api_service.name
 
   role   = "roles/run.invoker"
-  member = "serviceAccount:rmm-ui-service@${data.google_project.current.project_id}.iam.gserviceaccount.com"
+  member = "serviceAccount:${google_service_account.ui_service.email}"
 }
 
 # Places API Cloud Run service
@@ -295,5 +297,5 @@ resource "google_cloud_run_v2_service_iam_member" "places_api_invoker_ui" {
   name     = google_cloud_run_v2_service.places_api_service.name
 
   role   = "roles/run.invoker"
-  member = "serviceAccount:rmm-ui-service@${data.google_project.current.project_id}.iam.gserviceaccount.com"
+  member = "serviceAccount:${google_service_account.ui_service.email}"
 }
