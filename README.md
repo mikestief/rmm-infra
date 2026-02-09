@@ -2,13 +2,34 @@
 
 Terraform configuration for RMM (Rusty Maintenance Man) infrastructure on Google Cloud Platform.
 
-## Overview
+## Infrastructure Components
 
-This repository contains infrastructure-as-code for:
-- Global External HTTP(S) Load Balancer
-- Cloud Run service ingress configuration
-- SSL certificate management
-- Network endpoint groups and backend services
+### Compute (Cloud Run)
+- **rmm-ui-service**: 
+  - Frontend + BFF (Express).
+  - Public facing via Load Balancer.
+  - Connects to APIs via internal IAM authentication.
+- **rmm-vehicle-api-service**:
+  - Private backend service.
+  - Only invokable by `rmm-ui-service` service account.
+  - Connects to Cloud SQL via private IP.
+- **rmm-places-api-service**:
+  - Private backend service.
+  - Only invokable by `rmm-ui-service` service account.
+
+### Networking
+- **Global External Load Balancer**:
+  - SSL Termination (Google-managed certs).
+  - Routes all traffic to `rmm-ui-service`.
+- **VPC Network**:
+  - Serverless VPC Access Connector for Cloud Run -> Cloud SQL connectivity.
+  - Private Service Access for Cloud SQL.
+
+### Database
+- **Cloud SQL (PostgreSQL)**:
+  - Private IP only.
+  - IAM Authentication (no passwords).
+  - accessed via `cloud-sql-proxy` sidecar in Cloud Run services.
 
 ## Prerequisites
 
