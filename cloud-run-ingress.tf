@@ -12,6 +12,7 @@ resource "google_cloud_run_v2_service" "ui_service" {
 
   template {
     service_account = google_service_account.ui_service.email
+    timeout         = "600s"
 
     containers {
       image = "gcr.io/cloudrun/hello" # Placeholder - actual image managed by CI/CD
@@ -137,6 +138,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
 
   template {
     service_account = "rmm-vehicle-api-sa@rustymaintenance.iam.gserviceaccount.com"
+    timeout         = "600s"
 
     containers {
       image = "gcr.io/cloudrun/hello" # Placeholder - actual image managed by CI/CD
@@ -244,6 +246,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
 
   template {
     service_account = "rmm-places-api-sa@rustymaintenance.iam.gserviceaccount.com"
+    timeout         = "600s"
 
     containers {
       image = "gcr.io/cloudrun/hello" # Placeholder

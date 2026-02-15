@@ -24,7 +24,6 @@ resource "google_compute_backend_service" "ui_backend" {
   description           = "Backend service for ${var.cloud_run_service_name}"
   protocol              = "HTTP"
   port_name             = "http"
-  timeout_sec           = 30
   enable_cdn            = false
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -59,7 +58,6 @@ resource "google_compute_backend_service" "vehicle_api_backend" {
   description           = "Backend service for ${var.vehicle_api_service_name}"
   protocol              = "HTTP"
   port_name             = "http"
-  timeout_sec           = 30
   enable_cdn            = false
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
