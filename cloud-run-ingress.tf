@@ -69,6 +69,7 @@ resource "google_cloud_run_v2_service" "ui_service" {
       }
 
       resources {
+        cpu_idle = true
         limits = {
           cpu    = "1000m"
           memory = "256Mi"
@@ -145,6 +146,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
       }
 
       resources {
+        cpu_idle = true
         limits = {
           cpu    = "1000m"
           memory = "128Mi"
@@ -182,6 +184,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
       ]
       
       resources {
+        cpu_idle = true
         limits = {
           cpu    = "250m"
           memory = "256Mi"
@@ -250,6 +253,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
       }
 
       resources {
+        cpu_idle = true
         limits = {
           cpu    = "1000m"
           memory = "128Mi"
@@ -282,6 +286,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
       ]
       
       resources {
+        cpu_idle = true
         limits = {
           cpu    = "250m"
           memory = "256Mi"
