@@ -67,6 +67,13 @@ resource "google_cloud_run_v2_service" "ui_service" {
         name  = "GOOGLE_CLOUD_PROJECT"
         value = data.google_project.current.project_id
       }
+
+      resources {
+        limits = {
+          cpu    = "500m"
+          memory = "256Mi"
+        }
+      }
     }
 
     # VPC connector for private Cloud SQL access
@@ -97,7 +104,7 @@ resource "google_cloud_run_v2_service" "ui_service" {
       template[0].annotations,
       template[0].containers[0].image,
       # template[0].containers[0].env, # Managed by Terraform now
-      template[0].containers[0].resources,
+      # template[0].containers[0].resources,
       template[0].containers[0].ports,
       template[0].containers[0].args,
       template[0].containers[0].command,
@@ -137,6 +144,13 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
         container_port = 8080
       }
 
+      resources {
+        limits = {
+          cpu    = "500m"
+          memory = "128Mi"
+        }
+      }
+
       # Environment variables
       env {
         name  = "RECEIPT_BUCKET_NAME"
@@ -169,8 +183,8 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
       
       resources {
         limits = {
-          cpu    = "1"
-          memory = "512Mi"
+          cpu    = "250m"
+          memory = "256Mi"
         }
       }
     }
@@ -198,7 +212,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
       template[0].annotations,
       template[0].containers[0].image,
       # template[0].containers[0].env, # Managed by Terraform now
-      template[0].containers[0].resources,
+      # template[0].containers[0].resources,
       template[0].containers[0].ports,
       template[0].containers[0].args,
       template[0].containers[0].command,
@@ -235,6 +249,13 @@ resource "google_cloud_run_v2_service" "places_api_service" {
         container_port = 8080
       }
 
+      resources {
+        limits = {
+          cpu    = "500m"
+          memory = "128Mi"
+        }
+      }
+
       # Environment variables
       env {
         name  = "DATABASE_URL"
@@ -262,8 +283,8 @@ resource "google_cloud_run_v2_service" "places_api_service" {
       
       resources {
         limits = {
-          cpu    = "1"
-          memory = "512Mi"
+          cpu    = "250m"
+          memory = "256Mi"
         }
       }
     }
