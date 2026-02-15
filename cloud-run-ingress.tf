@@ -70,7 +70,7 @@ resource "google_cloud_run_v2_service" "ui_service" {
 
       resources {
         limits = {
-          cpu    = "500m"
+          cpu    = "1000m"
           memory = "256Mi"
         }
       }
@@ -146,7 +146,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
 
       resources {
         limits = {
-          cpu    = "500m"
+          cpu    = "1000m"
           memory = "128Mi"
         }
       }
@@ -251,7 +251,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
 
       resources {
         limits = {
-          cpu    = "500m"
+          cpu    = "1000m"
           memory = "128Mi"
         }
       }
