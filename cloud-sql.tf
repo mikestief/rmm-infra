@@ -11,7 +11,7 @@ resource "google_sql_database_instance" "vehicle_db" {
 
   settings {
     tier                        = var.db_tier
-    deletion_protection_enabled = false
+    deletion_protection_enabled = true
 
     # Minimal backup configuration for cost savings
     backup_configuration {
