@@ -47,6 +47,13 @@ resource "google_project_iam_member" "vehicle_api_trace_agent" {
   member  = "serviceAccount:rmm-vehicle-api-sa@${var.project_id}.iam.gserviceaccount.com"
 }
 
+# Grant Vertex AI User role for Receipt Summarization
+resource "google_project_iam_member" "vehicle_api_ai_user" {
+  project = var.project_id
+  role    = "roles/aiplatform.user"
+  member  = "serviceAccount:rmm-vehicle-api-sa@${var.project_id}.iam.gserviceaccount.com"
+}
+
 # Service Account for UI Service
 # This identity is used by the UI BFF to call other services (Vehicle/Places APIs)
 resource "google_service_account" "ui_service" {
@@ -113,5 +120,12 @@ resource "google_service_account_iam_member" "places_api_token_creator" {
 resource "google_project_iam_member" "places_api_trace_agent" {
   project = var.project_id
   role    = "roles/cloudtrace.agent"
+  member  = "serviceAccount:${google_service_account.places_api.email}"
+}
+
+# Grant Vertex AI User role for Receipt Summarization
+resource "google_project_iam_member" "places_api_ai_user" {
+  project = var.project_id
+  role    = "roles/aiplatform.user"
   member  = "serviceAccount:${google_service_account.places_api.email}"
 }

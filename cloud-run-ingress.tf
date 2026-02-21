@@ -48,7 +48,7 @@ resource "google_cloud_run_v2_service" "ui_service" {
         name  = "VEHICLE_API_URL"
         value = google_cloud_run_v2_service.vehicle_api_service.uri
       }
-    
+
       env {
         name  = "PLACES_API_URL"
         value = google_cloud_run_v2_service.places_api_service.uri
@@ -176,7 +176,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
     containers {
       name  = "cloud-sql-proxy"
       image = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.14.2"
-      
+
       args = [
         "--structured-logs",
         "--port=5432",
@@ -184,7 +184,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
         "--private-ip",
         google_sql_database_instance.vehicle_db.connection_name
       ]
-      
+
       resources {
         cpu_idle = true
         limits = {
@@ -199,7 +199,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
       connector = google_vpc_access_connector.cloud_run_connector.id
       egress    = "PRIVATE_RANGES_ONLY"
     }
-    
+
 
 
   }
@@ -240,7 +240,7 @@ resource "google_cloud_run_v2_service_iam_member" "vehicle_api_invoker_ui" {
 resource "google_cloud_run_v2_service" "places_api_service" {
   name     = "rmm-places-api-service"
   location = var.region
-  
+
   # Private service, only invoked by UI BFF
   ingress = "INGRESS_TRAFFIC_ALL"
 
@@ -279,7 +279,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
     containers {
       name  = "cloud-sql-proxy"
       image = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.14.2"
-      
+
       args = [
         "--structured-logs",
         "--port=5432",
@@ -287,7 +287,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
         "--private-ip",
         google_sql_database_instance.vehicle_db.connection_name
       ]
-      
+
       resources {
         cpu_idle = true
         limits = {

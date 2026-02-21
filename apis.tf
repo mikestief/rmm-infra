@@ -22,27 +22,34 @@ resource "google_project_service" "sql_component" {
 
 # GCS and IAM Credentials for Receipt functionality
 resource "google_project_service" "storage_api" {
-  project = var.project_id
-  service = "storage.googleapis.com"
+  project            = var.project_id
+  service            = "storage.googleapis.com"
   disable_on_destroy = false
 }
 
 resource "google_project_service" "iam_credentials" {
-  project = var.project_id
-  service = "iamcredentials.googleapis.com"
+  project            = var.project_id
+  service            = "iamcredentials.googleapis.com"
   disable_on_destroy = false
 }
 
 # Places API
 resource "google_project_service" "places_api" {
-  project = var.project_id
-  service = "places.googleapis.com"
+  project            = var.project_id
+  service            = "places.googleapis.com"
   disable_on_destroy = false
 }
 
 # Cloud Trace API for OpenTelemetry
 resource "google_project_service" "cloud_trace_api" {
-  project = var.project_id
-  service = "cloudtrace.googleapis.com"
+  project            = var.project_id
+  service            = "cloudtrace.googleapis.com"
+  disable_on_destroy = false
+}
+
+# Vertex AI API for Gemini 1.5 Flash
+resource "google_project_service" "aiplatform_api" {
+  project            = var.project_id
+  service            = "aiplatform.googleapis.com"
   disable_on_destroy = false
 }
