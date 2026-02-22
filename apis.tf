@@ -53,3 +53,10 @@ resource "google_project_service" "aiplatform_api" {
   service            = "aiplatform.googleapis.com"
   disable_on_destroy = false
 }
+
+# Cloud Scheduler API for maintenance reminders
+resource "google_project_service" "cloud_scheduler_api" {
+  project            = var.project_id
+  service            = "cloudscheduler.googleapis.com"
+  disable_on_destroy = false
+}
