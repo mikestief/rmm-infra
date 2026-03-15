@@ -83,3 +83,14 @@ variable "cookie_secret" {
   type        = string
   sensitive   = true
 }
+variable "oxidized_apps_domain" {
+  description = "Domain name for the Oxidized Apps website"
+  type        = string
+  default     = "oxidizedapps.com"
+}
+
+variable "oxidized_apps_service_name" {
+  description = "Name of the Cloud Run service for Oxidized Apps"
+  type        = string
+  default     = "oxidized-apps-website"
+}

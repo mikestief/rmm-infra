@@ -1,7 +1,7 @@
 # Cloud SQL PostgreSQL instance for vehicle API
 resource "google_sql_database_instance" "vehicle_db" {
   name             = "rmm-vehicle-db-instance"
-  database_version = "POSTGRES_15"
+  database_version = "POSTGRES_17"
   region           = var.db_region
 
   depends_on = [

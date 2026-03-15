@@ -106,11 +106,11 @@ resource "google_cloud_run_v2_service" "ui_service" {
       template[0].labels,
       template[0].annotations,
       template[0].containers[0].image,
-      # template[0].containers[0].env, # Managed by Terraform now
-      # template[0].containers[0].resources,
+      template[0].containers[0].resources,
       template[0].containers[0].ports,
       template[0].containers[0].args,
       template[0].containers[0].command,
+      template[0].containers[0].env,
     ]
   }
 }
@@ -159,18 +159,19 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
 
       # Environment variables
       env {
-        name  = "RECEIPT_BUCKET_NAME"
-        value = "rmm-receipts-${data.google_project.current.project_id}"
-      }
-
-      env {
         name  = "DATABASE_URL"
-        value = "postgresql://127.0.0.1:5432/rmm_vehicle_db?user=rmm-vehicle-api-sa%40rustymaintenance.iam"
+        value = "postgresql://127.0.0.1:5432/rmm_vehicle_db?user=rmm-vehicle-api-sa%40rustymaintenance.iam&sslmode=disable"
       }
 
       env {
-        name  = "JWT_USER_ID_CLAIM"
-        value = "email"
+        name  = "GOOGLE_CLOUD_PROJECT"
+        value = data.google_project.current.project_id
+      }
+
+      # Mount Cloud SQL Unix socket
+      volume_mounts {
+        name       = "cloudsql"
+        mount_path = "/cloudsql"
       }
     }
 
@@ -189,6 +190,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
 
       resources {
         cpu_idle = true
+        startup_cpu_boost = true
         limits = {
           cpu    = "250m"
           memory = "256Mi"
@@ -200,6 +202,14 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
     vpc_access {
       connector = google_vpc_access_connector.cloud_run_connector.id
       egress    = "PRIVATE_RANGES_ONLY"
+    }
+
+    # Cloud SQL connection via Unix socket
+    volumes {
+      name = "cloudsql"
+      cloud_sql_instance {
+        instances = [google_sql_database_instance.vehicle_db.connection_name]
+      }
     }
 
 
@@ -218,11 +228,11 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
       template[0].labels,
       template[0].annotations,
       template[0].containers[0].image,
-      # template[0].containers[0].env, # Managed by Terraform now
-      # template[0].containers[0].resources,
+      template[0].containers[0].resources,
       template[0].containers[0].ports,
       template[0].containers[0].args,
       template[0].containers[0].command,
+      template[0].containers[0].env,
     ]
   }
 }
@@ -269,12 +279,18 @@ resource "google_cloud_run_v2_service" "places_api_service" {
       # Environment variables
       env {
         name  = "DATABASE_URL"
-        value = "postgresql://127.0.0.1:5432/rmm_home_db?user=rmm-places-api-sa%40rustymaintenance.iam"
+        value = "postgresql://127.0.0.1:5432/rmm_home_db?user=rmm-places-api-sa%40rustymaintenance.iam&sslmode=disable"
       }
 
       env {
-        name  = "JWT_USER_ID_CLAIM"
-        value = "email"
+        name  = "GOOGLE_CLOUD_PROJECT"
+        value = data.google_project.current.project_id
+      }
+
+      # Mount Cloud SQL Unix socket
+      volume_mounts {
+        name       = "cloudsql"
+        mount_path = "/cloudsql"
       }
     }
 
@@ -293,6 +309,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
 
       resources {
         cpu_idle = true
+        startup_cpu_boost = true
         limits = {
           cpu    = "250m"
           memory = "256Mi"
@@ -304,6 +321,14 @@ resource "google_cloud_run_v2_service" "places_api_service" {
     vpc_access {
       connector = google_vpc_access_connector.cloud_run_connector.id
       egress    = "PRIVATE_RANGES_ONLY"
+    }
+
+    # Cloud SQL connection via Unix socket
+    volumes {
+      name = "cloudsql"
+      cloud_sql_instance {
+        instances = [google_sql_database_instance.vehicle_db.connection_name]
+      }
     }
   }
 
@@ -318,6 +343,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
       template[0].containers[0].ports,
       template[0].containers[0].args,
       template[0].containers[0].command,
+      template[0].containers[0].env,
     ]
   }
 }

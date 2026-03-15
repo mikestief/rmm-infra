@@ -89,6 +89,19 @@ resource "google_compute_managed_ssl_certificate" "default" {
   }
 }
 
+# SSL certificate for Oxidized Apps
+resource "google_compute_managed_ssl_certificate" "oxidized_apps" {
+  name = "oxidized-apps-ssl-cert"
+
+  managed {
+    domains = [var.oxidized_apps_domain]
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
 # URL map with path-based routing
 resource "google_compute_url_map" "default" {
   name            = "${var.cloud_run_service_name}-url-map"
@@ -98,6 +111,11 @@ resource "google_compute_url_map" "default" {
   host_rule {
     hosts        = [var.domain]
     path_matcher = "path-matcher"
+  }
+
+  host_rule {
+    hosts        = [var.oxidized_apps_domain]
+    path_matcher = "oxidized-apps-matcher"
   }
 
   path_matcher {
@@ -116,6 +134,11 @@ resource "google_compute_url_map" "default" {
 
     # All other paths (including /api/v1/vehicles*) go to UI service (BFF + static files + SPA)
   }
+
+  path_matcher {
+    name            = "oxidized-apps-matcher"
+    default_service = google_compute_backend_service.oxidized_apps_backend.id
+  }
 }
 
 # URL map for HTTP to HTTPS redirect
@@ -133,7 +156,10 @@ resource "google_compute_url_map" "http_redirect" {
 resource "google_compute_target_https_proxy" "default" {
   name             = "${var.cloud_run_service_name}-https-proxy"
   url_map          = google_compute_url_map.default.id
-  ssl_certificates = [google_compute_managed_ssl_certificate.default.id]
+  ssl_certificates = [
+    google_compute_managed_ssl_certificate.default.id,
+    google_compute_managed_ssl_certificate.oxidized_apps.id
+  ]
 }
 
 # Target HTTP proxy (redirects to HTTPS)
