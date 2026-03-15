@@ -78,10 +78,10 @@ resource "google_compute_backend_service" "vehicle_api_backend" {
 
 # Google-managed SSL certificate
 resource "google_compute_managed_ssl_certificate" "default" {
-  name = replace("${var.domain}-ssl-cert", ".", "-")
+  name = replace("${var.domain}-ssl-cert-v2", ".", "-")
 
   managed {
-    domains = [var.domain]
+    domains = [var.domain, "www.${var.domain}"]
   }
 
   lifecycle {
@@ -91,10 +91,10 @@ resource "google_compute_managed_ssl_certificate" "default" {
 
 # SSL certificate for Oxidized Apps
 resource "google_compute_managed_ssl_certificate" "oxidized_apps" {
-  name = "oxidized-apps-ssl-cert"
+  name = "oxidized-apps-ssl-cert-v2"
 
   managed {
-    domains = [var.oxidized_apps_domain]
+    domains = [var.oxidized_apps_domain, "www.${var.oxidized_apps_domain}"]
   }
 
   lifecycle {
@@ -109,12 +109,12 @@ resource "google_compute_url_map" "default" {
   default_service = google_compute_backend_service.ui_backend.id
 
   host_rule {
-    hosts        = [var.domain]
+    hosts        = [var.domain, "www.${var.domain}"]
     path_matcher = "path-matcher"
   }
 
   host_rule {
-    hosts        = [var.oxidized_apps_domain]
+    hosts        = [var.oxidized_apps_domain, "www.${var.oxidized_apps_domain}"]
     path_matcher = "oxidized-apps-matcher"
   }
 
