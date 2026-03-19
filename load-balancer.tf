@@ -36,21 +36,19 @@ resource "google_compute_backend_service" "ui_backend" {
     sample_rate = 1.0
   }
 
-  iap {
-    oauth2_client_id     = var.iap_client_id
-    oauth2_client_secret = var.iap_client_secret
-  }
-
-  # Health checks are not supported for serverless NEG backends (Cloud Run)
+  # iap {
+  #   oauth2_client_id     = var.iap_client_id
+  #   oauth2_client_secret = var.iap_client_secret
+  # }
 }
 
 # Allow specific users to access the application via IAP
-resource "google_iap_web_backend_service_iam_binding" "ui_iap_access" {
-  project             = var.project_id
-  web_backend_service = google_compute_backend_service.ui_backend.name
-  role                = "roles/iap.httpsResourceAccessor"
-  members             = var.iap_allowed_users
-}
+# resource "google_iap_web_backend_service_iam_binding" "ui_iap_access" {
+#   project             = var.project_id
+#   web_backend_service = google_compute_backend_service.ui_backend.name
+#   role                = "roles/iap.httpsResourceAccessor"
+#   members             = var.iap_allowed_users
+# }
 
 # Backend service for Vehicle API
 resource "google_compute_backend_service" "vehicle_api_backend" {
