@@ -2,7 +2,7 @@
 resource "google_cloud_run_v2_service" "oxidized_apps_website" {
   name     = "oxidized-apps-website"
   location = var.region
-  ingress  = "INGRESS_TRAFFIC_ALL"
+  ingress  = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
 
   template {
     # Scale to zero to minimize cost
@@ -16,8 +16,9 @@ resource "google_cloud_run_v2_service" "oxidized_apps_website" {
       
       resources {
         cpu_idle = true
+        startup_cpu_boost = true
         limits = {
-          cpu    = "1000m"
+          cpu    = "1"
           memory = "128Mi"
         }
       }
@@ -35,7 +36,11 @@ resource "google_cloud_run_v2_service" "oxidized_apps_website" {
 
   lifecycle {
     ignore_changes = [
+      client,
+      client_version,
       template[0].containers[0].image,
+      template[0].labels,
+      template[0].containers[0].env,
     ]
   }
 }
