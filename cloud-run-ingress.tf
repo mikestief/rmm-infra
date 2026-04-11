@@ -181,6 +181,11 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
         value = data.google_project.current.project_id
       }
 
+      env {
+        name  = "SERVICE_URL"
+        value = google_cloud_run_v2_service.vehicle_api_service.uri
+      }
+
       # Mount Cloud SQL Unix socket
       volume_mounts {
         name       = "cloudsql"
@@ -298,6 +303,11 @@ resource "google_cloud_run_v2_service" "places_api_service" {
       env {
         name  = "GOOGLE_CLOUD_PROJECT"
         value = data.google_project.current.project_id
+      }
+
+      env {
+        name  = "SERVICE_URL"
+        value = google_cloud_run_v2_service.places_api_service.uri
       }
 
       # Mount Cloud SQL Unix socket
