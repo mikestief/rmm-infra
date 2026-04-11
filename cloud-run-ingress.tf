@@ -43,7 +43,6 @@ resource "google_cloud_run_v2_service" "ui_service" {
         mount_path = "/cloudsql"
       }
 
-      # Environment variables to point to backend APIs
       env {
         name  = "VEHICLE_API_URL"
         value = google_cloud_run_v2_service.vehicle_api_service.uri
@@ -55,8 +54,23 @@ resource "google_cloud_run_v2_service" "ui_service" {
       }
 
       env {
-        name  = "COOKIE_SECRET"
-        value = var.cookie_secret
+        name  = "GOOGLE_PLACES_BFF_API_KEY"
+        value = "AIzaSyDkXdtRUfLKOtD_F5Dc1q87xxivZR5MVOU"
+      }
+
+      env {
+        name  = "VITE_GOOGLE_PLACES_API_KEY"
+        value = "AIzaSyAB3tzWtQfJwNPXmhBqgpbI_yqsU9Nm9dU"
+      }
+
+      env {
+        name = "COOKIE_SECRET"
+        value_source {
+          secret_key_ref {
+            secret  = "COOKIE_SECRET"
+            version = "latest"
+          }
+        }
       }
 
       env {
@@ -110,7 +124,6 @@ resource "google_cloud_run_v2_service" "ui_service" {
       template[0].containers[0].ports,
       template[0].containers[0].args,
       template[0].containers[0].command,
-      template[0].containers[0].env,
     ]
   }
 }

@@ -78,11 +78,6 @@ variable "iap_allowed_users" {
   default     = []
 }
 
-variable "cookie_secret" {
-  description = "Secret used for signing cookies"
-  type        = string
-  sensitive   = true
-}
 variable "oxidized_apps_domain" {
   description = "Domain name for the Oxidized Apps website"
   type        = string

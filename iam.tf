@@ -68,6 +68,13 @@ resource "google_project_iam_member" "ui_service_secret_accessor" {
   member  = "serviceAccount:${google_service_account.ui_service.email}"
 }
 
+# Grant Firebase Cloud Messaging Admin role to UI SA
+resource "google_project_iam_member" "ui_service_firebase_messaging" {
+  project = var.project_id
+  role    = "roles/firebasecloudmessaging.admin"
+  member  = "serviceAccount:${google_service_account.ui_service.email}"
+}
+
 # Service Account for Places API
 resource "google_service_account" "places_api" {
   account_id   = "rmm-places-api-sa"
