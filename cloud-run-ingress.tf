@@ -83,6 +83,11 @@ resource "google_cloud_run_v2_service" "ui_service" {
         value = data.google_project.current.project_id
       }
 
+      env {
+        name  = "SCHEDULER_AUDIENCE"
+        value = var.iap_client_id
+      }
+
       resources {
         cpu_idle = true
         startup_cpu_boost = true
