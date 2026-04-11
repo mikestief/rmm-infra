@@ -181,6 +181,9 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
         value = data.google_project.current.project_id
       }
 
+      # SERVICE_URL is set by CI/CD after deploy (gcloud run services update --update-env-vars)
+      # because Cloud Run services cannot self-reference their own URI in Terraform.
+
       # Mount Cloud SQL Unix socket
       volume_mounts {
         name       = "cloudsql"
@@ -299,6 +302,9 @@ resource "google_cloud_run_v2_service" "places_api_service" {
         name  = "GOOGLE_CLOUD_PROJECT"
         value = data.google_project.current.project_id
       }
+
+      # SERVICE_URL is set by CI/CD after deploy (gcloud run services update --update-env-vars)
+      # because Cloud Run services cannot self-reference their own URI in Terraform.
 
       # Mount Cloud SQL Unix socket
       volume_mounts {
