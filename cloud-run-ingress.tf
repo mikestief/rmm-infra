@@ -89,7 +89,7 @@ resource "google_cloud_run_v2_service" "ui_service" {
       }
 
       resources {
-        cpu_idle = true
+        cpu_idle          = true
         startup_cpu_boost = true
         limits = {
           cpu    = "1000m"
@@ -167,7 +167,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
       }
 
       resources {
-        cpu_idle = true
+        cpu_idle          = true
         startup_cpu_boost = true
         limits = {
           cpu    = "1000m"
@@ -184,6 +184,31 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
       env {
         name  = "GOOGLE_CLOUD_PROJECT"
         value = data.google_project.current.project_id
+      }
+
+      env {
+        name  = "RECEIPT_BUCKET_NAME"
+        value = google_storage_bucket.receipts.name
+      }
+
+      env {
+        name  = "EXPORT_BUCKET_NAME"
+        value = google_storage_bucket.exports.name
+      }
+
+      env {
+        name  = "PUBSUB_EXPORT_TOPIC"
+        value = google_pubsub_topic.vehicle_export_jobs.id
+      }
+
+      env {
+        name  = "PUBSUB_SA_EMAIL"
+        value = google_service_account.pubsub_export_invoker.email
+      }
+
+      env {
+        name  = "EXPORT_COOLDOWN_DAYS"
+        value = "7"
       }
 
       # SERVICE_URL is set by CI/CD after deploy (gcloud run services update --update-env-vars)
@@ -210,7 +235,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
       ]
 
       resources {
-        cpu_idle = true
+        cpu_idle          = true
         startup_cpu_boost = true
         limits = {
           cpu    = "250m"
@@ -289,7 +314,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
       }
 
       resources {
-        cpu_idle = true
+        cpu_idle          = true
         startup_cpu_boost = true
         limits = {
           cpu    = "1000m"
@@ -332,7 +357,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
       ]
 
       resources {
-        cpu_idle = true
+        cpu_idle          = true
         startup_cpu_boost = true
         limits = {
           cpu    = "250m"

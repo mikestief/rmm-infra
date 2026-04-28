@@ -60,3 +60,17 @@ resource "google_project_service" "cloud_scheduler_api" {
   service            = "cloudscheduler.googleapis.com"
   disable_on_destroy = false
 }
+
+# Pub/Sub API for async maintenance export jobs
+resource "google_project_service" "pubsub_api" {
+  project            = var.project_id
+  service            = "pubsub.googleapis.com"
+  disable_on_destroy = false
+}
+
+# Firebase Cloud Messaging API for push notifications
+resource "google_project_service" "fcm_api" {
+  project            = var.project_id
+  service            = "fcm.googleapis.com"
+  disable_on_destroy = false
+}

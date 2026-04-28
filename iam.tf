@@ -54,6 +54,28 @@ resource "google_project_iam_member" "vehicle_api_ai_user" {
   member  = "serviceAccount:rmm-vehicle-api-sa@${var.project_id}.iam.gserviceaccount.com"
 }
 
+# Grant Firebase Cloud Messaging Admin for maintenance export push notifications
+resource "google_project_iam_member" "vehicle_api_firebase_messaging" {
+  project = var.project_id
+  role    = "roles/firebasecloudmessaging.admin"
+  member  = "serviceAccount:rmm-vehicle-api-sa@${var.project_id}.iam.gserviceaccount.com"
+}
+
+# Grant Pub/Sub Publisher so the vehicle API can enqueue export jobs
+resource "google_pubsub_topic_iam_member" "vehicle_api_export_publisher" {
+  project = var.project_id
+  topic   = google_pubsub_topic.vehicle_export_jobs.name
+  role    = "roles/pubsub.publisher"
+  member  = "serviceAccount:rmm-vehicle-api-sa@${var.project_id}.iam.gserviceaccount.com"
+}
+
+# Grant Object Admin on the exports bucket for zip upload and signed URL generation
+resource "google_storage_bucket_iam_member" "vehicle_api_exports_admin" {
+  bucket = google_storage_bucket.exports.name
+  role   = "roles/storage.objectAdmin"
+  member = "serviceAccount:rmm-vehicle-api-sa@${var.project_id}.iam.gserviceaccount.com"
+}
+
 # Service Account for UI Service
 # This identity is used by the UI BFF to call other services (Vehicle/Places APIs)
 resource "google_service_account" "ui_service" {

@@ -13,9 +13,9 @@ resource "google_cloud_run_v2_service" "oxidized_apps_website" {
 
     containers {
       image = "gcr.io/cloudrun/hello" # Placeholder - updated by CI/CD
-      
+
       resources {
-        cpu_idle = true
+        cpu_idle          = true
         startup_cpu_boost = true
         limits = {
           cpu    = "1"
