@@ -12,7 +12,7 @@ resource "google_storage_bucket" "receipts" {
   public_access_prevention = "enforced"
 
   cors {
-    origin          = ["https://${var.domain}", "https://www.${var.domain}", "http://localhost:5173", "http://localhost:8080"]
+    origin          = ["https://${var.domain}", "https://www.${var.domain}", "http://localhost:5173", "http://localhost:8080", "capacitor://localhost"]
     method          = ["GET", "POST", "PUT", "DELETE"]
     response_header = ["*"]
     max_age_seconds = 3600
