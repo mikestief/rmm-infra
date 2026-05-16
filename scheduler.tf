@@ -35,12 +35,12 @@ resource "google_cloud_scheduler_job" "reminder_notifications" {
   http_target {
     http_method = "POST"
     # Target the public domain to pass through the Load Balancer and IAP
-    uri         = "https://${var.domain}/api/v1/internal/process-reminders"
-    
+    uri = "https://${var.domain}/api/v1/internal/process-reminders"
+
     oidc_token {
       service_account_email = google_service_account.scheduler_sa.email
       # For IAP specifically, the audience MUST be the Client ID of the IAP OAuth client
-      audience              = var.iap_client_id
+      audience = var.iap_client_id
     }
   }
 }

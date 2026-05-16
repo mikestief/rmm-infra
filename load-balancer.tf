@@ -152,8 +152,8 @@ resource "google_compute_url_map" "http_redirect" {
 
 # Target HTTPS proxy
 resource "google_compute_target_https_proxy" "default" {
-  name             = "${var.cloud_run_service_name}-https-proxy"
-  url_map          = google_compute_url_map.default.id
+  name    = "${var.cloud_run_service_name}-https-proxy"
+  url_map = google_compute_url_map.default.id
   ssl_certificates = [
     google_compute_managed_ssl_certificate.default.id,
     google_compute_managed_ssl_certificate.oxidized_apps.id
