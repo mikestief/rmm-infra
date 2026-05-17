@@ -22,7 +22,7 @@ resource "google_cloud_run_v2_job" "vehicle_cleanup_job" {
 
       containers {
         image   = "gcr.io/cloudrun/hello" # Placeholder — actual image managed by CI/CD
-        command = ["./gcs_cleanup_job"]
+        command = ["./gcs-cleanup-job"]
 
         env {
           name  = "DATABASE_URL"
@@ -135,7 +135,7 @@ resource "google_cloud_run_v2_job" "places_cleanup_job" {
 
       containers {
         image   = "gcr.io/cloudrun/hello" # Placeholder — actual image managed by CI/CD
-        command = ["./gcs_cleanup_job"]
+        command = ["./gcs-cleanup-job"]
 
         env {
           name  = "DATABASE_URL"
