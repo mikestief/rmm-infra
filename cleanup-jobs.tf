@@ -21,7 +21,8 @@ resource "google_cloud_run_v2_job" "vehicle_cleanup_job" {
       timeout               = "600s"
 
       containers {
-        image = "gcr.io/cloudrun/hello" # Placeholder — actual image managed by CI/CD
+        image   = "gcr.io/cloudrun/hello" # Placeholder — actual image managed by CI/CD
+        command = ["./gcs_cleanup_job"]
 
         env {
           name  = "DATABASE_URL"
@@ -109,7 +110,7 @@ resource "google_cloud_scheduler_job" "vehicle_cleanup_schedule" {
 
     oidc_token {
       service_account_email = google_service_account.scheduler_sa.email
-      audience              = "https://${var.region}-run.googleapis.com/v2/projects/${var.project_id}/locations/${var.region}/jobs/${google_cloud_run_v2_job.vehicle_cleanup_job.name}:run"
+      audience              = "https://run.googleapis.com/"
     }
   }
 }
@@ -133,7 +134,8 @@ resource "google_cloud_run_v2_job" "places_cleanup_job" {
       timeout               = "600s"
 
       containers {
-        image = "gcr.io/cloudrun/hello" # Placeholder — actual image managed by CI/CD
+        image   = "gcr.io/cloudrun/hello" # Placeholder — actual image managed by CI/CD
+        command = ["./gcs_cleanup_job"]
 
         env {
           name  = "DATABASE_URL"
@@ -221,7 +223,7 @@ resource "google_cloud_scheduler_job" "places_cleanup_schedule" {
 
     oidc_token {
       service_account_email = google_service_account.scheduler_sa.email
-      audience              = "https://${var.region}-run.googleapis.com/v2/projects/${var.project_id}/locations/${var.region}/jobs/${google_cloud_run_v2_job.places_cleanup_job.name}:run"
+      audience              = "https://run.googleapis.com/"
     }
   }
 }
