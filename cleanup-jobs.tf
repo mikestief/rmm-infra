@@ -21,6 +21,7 @@ resource "google_cloud_run_v2_job" "vehicle_cleanup_job" {
       timeout               = "600s"
 
       containers {
+        name    = "hello-1"
         image   = "gcr.io/cloudrun/hello" # Placeholder — actual image managed by CI/CD
         command = ["./gcs-cleanup-job"]
 
@@ -134,6 +135,7 @@ resource "google_cloud_run_v2_job" "places_cleanup_job" {
       timeout               = "600s"
 
       containers {
+        name    = "hello-1"
         image   = "gcr.io/cloudrun/hello" # Placeholder — actual image managed by CI/CD
         command = ["./gcs-cleanup-job"]
 
