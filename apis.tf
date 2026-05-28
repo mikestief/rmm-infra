@@ -68,6 +68,13 @@ resource "google_project_service" "pubsub_api" {
   disable_on_destroy = false
 }
 
+# Secret Manager API for billing secrets (App Store, Google Play, Stripe)
+resource "google_project_service" "secret_manager_api" {
+  project            = var.project_id
+  service            = "secretmanager.googleapis.com"
+  disable_on_destroy = false
+}
+
 # Firebase Cloud Messaging API for push notifications
 resource "google_project_service" "fcm_api" {
   project            = var.project_id

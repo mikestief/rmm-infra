@@ -116,6 +116,67 @@ resource "google_pubsub_subscription" "vehicle_export_dlq" {
   }
 }
 
+# ── Google Play Real-time Developer Notifications ──────────────────────────
+#
+# Flow:
+#   Google Play  →  rmm-play-notifications topic (push subscription)
+#     → BFF /api/webhooks/google?token=<secret> → upserts user_subscriptions
+#       on failure (5 attempts) → rmm-play-notifications-dead-letter topic
+#
+# Verification: BFF checks ?token query param against GOOGLE_PLAY_PUBSUB_TOKEN
+# env var (value loaded into Secret Manager as google-play-pubsub-token).
+# No OIDC token needed — Google Play pushes to a public HTTPS endpoint.
+
+resource "google_pubsub_topic" "play_notifications" {
+  name    = "rmm-play-notifications"
+  project = var.project_id
+
+  depends_on = [google_project_service.pubsub_api]
+}
+
+resource "google_pubsub_topic" "play_notifications_dlq" {
+  name    = "rmm-play-notifications-dead-letter"
+  project = var.project_id
+
+  depends_on = [google_project_service.pubsub_api]
+}
+
+# DLQ IAM: Pub/Sub service agent needs publish rights on DLQ topic
+# and subscribe rights on the source subscription to move failed messages.
+resource "google_pubsub_topic_iam_member" "pubsub_sa_play_dlq_publisher" {
+  project = var.project_id
+  topic   = google_pubsub_topic.play_notifications_dlq.name
+  role    = "roles/pubsub.publisher"
+  member  = "serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
+}
+
+resource "google_pubsub_subscription_iam_member" "pubsub_sa_play_subscriber" {
+  project      = var.project_id
+  subscription = google_pubsub_subscription.play_notifications_push.name
+  role         = "roles/pubsub.subscriber"
+  member       = "serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
+}
+
+resource "google_pubsub_subscription" "play_notifications_push" {
+  name    = "rmm-play-notifications-push"
+  topic   = google_pubsub_topic.play_notifications.name
+  project = var.project_id
+
+  ack_deadline_seconds       = 20
+  message_retention_duration = "86400s"
+
+  dead_letter_policy {
+    dead_letter_topic     = google_pubsub_topic.play_notifications_dlq.id
+    max_delivery_attempts = 5
+  }
+
+  push_config {
+    # Token verified by BFF against GOOGLE_PLAY_PUBSUB_TOKEN env var.
+    # Update this value (re-apply) if the token is rotated.
+    push_endpoint = "https://app.rustymaintenance.com/api/webhooks/google?token=${var.google_play_pubsub_token}"
+  }
+}
+
 # ── Outputs ────────────────────────────────────────────────────────────────
 
 output "vehicle_export_topic_id" {

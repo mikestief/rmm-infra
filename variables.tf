@@ -78,6 +78,12 @@ variable "iap_allowed_users" {
   default     = []
 }
 
+variable "google_play_pubsub_token" {
+  description = "Secret token embedded in the Google Play Pub/Sub push endpoint URL for verification by the BFF"
+  type        = string
+  sensitive   = true
+}
+
 variable "oxidized_apps_domain" {
   description = "Domain name for the Oxidized Apps website"
   type        = string
