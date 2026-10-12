@@ -122,6 +122,7 @@ resource "google_cloud_run_v2_service" "ui_service" {
     ignore_changes = [
       client,
       client_version,
+      scaling,
       template[0].labels,
       template[0].annotations,
       template[0].containers[0].image,
@@ -271,6 +272,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
     ignore_changes = [
       client,
       client_version,
+      scaling,
       template[0].labels,
       template[0].annotations,
       template[0].containers[0].image,
@@ -385,6 +387,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
     ignore_changes = [
       client,
       client_version,
+      scaling,
       template[0].labels,
       template[0].annotations,
       template[0].containers[0].image,

@@ -72,6 +72,12 @@ resource "google_pubsub_subscription" "vehicle_export_processor" {
   topic   = google_pubsub_topic.vehicle_export_jobs.name
   project = var.project_id
 
+  # Never expire. Without this, Pub/Sub deletes a subscription after 31 days
+  # with no activity (the default), silently breaking delivery.
+  expiration_policy {
+    ttl = ""
+  }
+
   # Give the handler up to 10 minutes to process a zip build + upload.
   ack_deadline_seconds = 600
 
@@ -102,6 +108,12 @@ resource "google_pubsub_subscription" "vehicle_export_dlq" {
   name    = "rmm-vehicle-export-dlq"
   topic   = google_pubsub_topic.vehicle_export_jobs_dlq.name
   project = var.project_id
+
+  # Never expire. Without this, Pub/Sub deletes a subscription after 31 days
+  # with no activity (the default), silently breaking delivery.
+  expiration_policy {
+    ttl = ""
+  }
 
   ack_deadline_seconds       = 60
   message_retention_duration = "86400s"
@@ -161,6 +173,12 @@ resource "google_pubsub_subscription" "play_notifications_push" {
   name    = "rmm-play-notifications-push"
   topic   = google_pubsub_topic.play_notifications.name
   project = var.project_id
+
+  # Never expire. Without this, Pub/Sub deletes a subscription after 31 days
+  # with no activity (the default), silently breaking delivery.
+  expiration_policy {
+    ttl = ""
+  }
 
   ack_deadline_seconds       = 20
   message_retention_duration = "86400s"

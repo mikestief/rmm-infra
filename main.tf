@@ -1,10 +1,10 @@
 terraform {
-  required_version = ">= 1.0"
+  required_version = ">= 1.5.7"
 
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 6.0"
+      version = "~> 8.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -12,7 +12,10 @@ terraform {
     }
   }
 
-  # Uncomment and configure backend after creating GCS bucket
+  # Remote state. Enable after the state bucket in state-bucket.tf exists:
+  #   1. terraform apply            (creates the bucket, state still local)
+  #   2. uncomment this block
+  #   3. terraform init -migrate-state
   # backend "gcs" {
   #   bucket = "rustymaintenance-terraform-state"
   #   prefix = "rmm-infra"
