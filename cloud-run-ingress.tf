@@ -228,7 +228,7 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
     # Sidecar for Cloud SQL Auth Proxy
     containers {
       name  = "cloud-sql-proxy"
-      image = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.14.2"
+      image = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.26.0"
 
       args = [
         "--structured-logs",
@@ -354,7 +354,7 @@ resource "google_cloud_run_v2_service" "places_api_service" {
     # Sidecar for Cloud SQL Auth Proxy
     containers {
       name  = "cloud-sql-proxy"
-      image = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.14.2"
+      image = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.26.0"
 
       args = [
         "--structured-logs",
