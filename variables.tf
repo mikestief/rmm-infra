@@ -95,3 +95,15 @@ variable "oxidized_apps_service_name" {
   type        = string
   default     = "oxidized-apps-website"
 }
+
+variable "vpc_network" {
+  description = "VPC network Cloud Run uses for Direct VPC egress"
+  type        = string
+  default     = "default"
+}
+
+variable "vpc_subnetwork" {
+  description = "Subnetwork (in the Cloud Run region) for Direct VPC egress"
+  type        = string
+  default     = "default"
+}

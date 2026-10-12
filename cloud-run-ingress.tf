@@ -98,10 +98,13 @@ resource "google_cloud_run_v2_service" "ui_service" {
       }
     }
 
-    # VPC connector for private Cloud SQL access
+    # Direct VPC egress for private Cloud SQL access
     vpc_access {
-      connector = google_vpc_access_connector.cloud_run_connector.id
-      egress    = "PRIVATE_RANGES_ONLY"
+      network_interfaces {
+        network    = var.vpc_network
+        subnetwork = var.vpc_subnetwork
+      }
+      egress = "PRIVATE_RANGES_ONLY"
     }
 
     # Cloud SQL connection via Unix socket
@@ -245,10 +248,13 @@ resource "google_cloud_run_v2_service" "vehicle_api_service" {
       }
     }
 
-    # VPC connector for private Cloud SQL access
+    # Direct VPC egress for private Cloud SQL access
     vpc_access {
-      connector = google_vpc_access_connector.cloud_run_connector.id
-      egress    = "PRIVATE_RANGES_ONLY"
+      network_interfaces {
+        network    = var.vpc_network
+        subnetwork = var.vpc_subnetwork
+      }
+      egress = "PRIVATE_RANGES_ONLY"
     }
 
     # Cloud SQL connection via Unix socket
@@ -368,10 +374,13 @@ resource "google_cloud_run_v2_service" "places_api_service" {
       }
     }
 
-    # VPC connector for private Cloud SQL access
+    # Direct VPC egress for private Cloud SQL access
     vpc_access {
-      connector = google_vpc_access_connector.cloud_run_connector.id
-      egress    = "PRIVATE_RANGES_ONLY"
+      network_interfaces {
+        network    = var.vpc_network
+        subnetwork = var.vpc_subnetwork
+      }
+      egress = "PRIVATE_RANGES_ONLY"
     }
 
     # Cloud SQL connection via Unix socket

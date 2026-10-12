@@ -76,8 +76,11 @@ resource "google_cloud_run_v2_job" "vehicle_cleanup_job" {
       }
 
       vpc_access {
-        connector = google_vpc_access_connector.cloud_run_connector.id
-        egress    = "PRIVATE_RANGES_ONLY"
+        network_interfaces {
+          network    = var.vpc_network
+          subnetwork = var.vpc_subnetwork
+        }
+        egress = "PRIVATE_RANGES_ONLY"
       }
     }
   }
@@ -192,8 +195,11 @@ resource "google_cloud_run_v2_job" "places_cleanup_job" {
       }
 
       vpc_access {
-        connector = google_vpc_access_connector.cloud_run_connector.id
-        egress    = "PRIVATE_RANGES_ONLY"
+        network_interfaces {
+          network    = var.vpc_network
+          subnetwork = var.vpc_subnetwork
+        }
+        egress = "PRIVATE_RANGES_ONLY"
       }
     }
   }

@@ -1,4 +1,6 @@
-# VPC Connector for Cloud Run to access private resources
+# Legacy Serverless VPC Access connector.
+# Cloud Run services and jobs now use Direct VPC egress. Remove this connector
+# once the CI-managed migration jobs in both API repos no longer reference it.
 # Using a different IP range to avoid conflicts with service networking
 resource "google_vpc_access_connector" "cloud_run_connector" {
   name          = "rmm-connector-v2"
