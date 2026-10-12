@@ -25,6 +25,12 @@ resource "google_sql_database_instance" "vehicle_db" {
       }
     }
 
+    # Matches the instance's current setting: no final backup on delete.
+    # The instance is protected by deletion_protection_enabled above.
+    final_backup_config {
+      enabled = false
+    }
+
     # IP configuration - private IP only for secure access
     ip_configuration {
       ipv4_enabled                                  = false

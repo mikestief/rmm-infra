@@ -47,7 +47,7 @@ resource "google_project_service" "cloud_trace_api" {
   disable_on_destroy = false
 }
 
-# Vertex AI API for Gemini 1.5 Flash
+# Vertex AI API for Gemini
 resource "google_project_service" "aiplatform_api" {
   project            = var.project_id
   service            = "aiplatform.googleapis.com"

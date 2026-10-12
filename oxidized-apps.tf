@@ -38,6 +38,7 @@ resource "google_cloud_run_v2_service" "oxidized_apps_website" {
     ignore_changes = [
       client,
       client_version,
+      scaling,
       template[0].containers[0].image,
       template[0].labels,
       template[0].containers[0].env,

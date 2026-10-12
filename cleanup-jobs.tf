@@ -84,6 +84,8 @@ resource "google_cloud_run_v2_job" "vehicle_cleanup_job" {
 
   lifecycle {
     ignore_changes = [
+      client,
+      client_version,
       template[0].template[0].containers[0].image,
     ]
   }
@@ -198,6 +200,8 @@ resource "google_cloud_run_v2_job" "places_cleanup_job" {
 
   lifecycle {
     ignore_changes = [
+      client,
+      client_version,
       template[0].template[0].containers[0].image,
     ]
   }
