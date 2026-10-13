@@ -50,7 +50,7 @@ resource "google_cloud_run_v2_job" "vehicle_cleanup_job" {
 
       containers {
         name  = "cloud-sql-proxy"
-        image = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.14.2"
+        image = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.26.0"
 
         args = [
           "--structured-logs",
@@ -169,7 +169,7 @@ resource "google_cloud_run_v2_job" "places_cleanup_job" {
 
       containers {
         name  = "cloud-sql-proxy"
-        image = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.14.2"
+        image = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.26.0"
 
         args = [
           "--structured-logs",

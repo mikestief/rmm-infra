@@ -1,14 +1,7 @@
-# Enable required APIs for private Cloud SQL and VPC connector
+# Enable required APIs for private Cloud SQL
 resource "google_project_service" "service_networking" {
   project = var.project_id
   service = "servicenetworking.googleapis.com"
-
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "vpc_access" {
-  project = var.project_id
-  service = "vpcaccess.googleapis.com"
 
   disable_on_destroy = false
 }
