@@ -12,14 +12,13 @@ terraform {
     }
   }
 
-  # Remote state. Enable after the state bucket in state-bucket.tf exists:
-  #   1. terraform apply            (creates the bucket, state still local)
-  #   2. uncomment this block
-  #   3. terraform init -migrate-state
-  # backend "gcs" {
-  #   bucket = "rustymaintenance-terraform-state"
-  #   prefix = "rmm-infra"
-  # }
+  # Remote state in the versioned bucket defined in state-bucket.tf.
+  # The bucket is itself managed by this configuration, so never destroy the
+  # whole stack; it also has prevent_destroy set.
+  backend "gcs" {
+    bucket = "rustymaintenance-terraform-state"
+    prefix = "rmm-infra"
+  }
 }
 
 provider "google" {
