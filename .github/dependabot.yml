@@ -1,0 +1,20 @@
+# Dependabot version updates for the RMM software factory (mikestief/rmm-ui#752).
+# Weekly; minor and patch updates are grouped into one PR per ecosystem, majors stay separate.
+# The factory foreman only treats Dependabot PRs whose CI fails as work.
+version: 2
+# No github-actions entry: this repo has no workflows yet. Add one when .github/workflows/ exists.
+updates:
+  - package-ecosystem: terraform
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+    commit-message:
+      prefix: chore(deps)
+    groups:
+      terraform-minor-patch:
+        update-types:
+          - minor
+          - patch
