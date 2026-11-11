@@ -137,6 +137,22 @@ resource "google_compute_url_map" "default" {
     name            = "oxidized-apps-matcher"
     default_service = google_compute_backend_service.oxidized_apps_backend.id
   }
+
+  # XFit gym tracker demo (see gymtest.tf)
+  host_rule {
+    hosts        = [var.gymtest_domain]
+    path_matcher = "gymtest-matcher"
+  }
+
+  path_matcher {
+    name            = "gymtest-matcher"
+    default_service = google_compute_backend_service.xfit_gym_ui_backend.id
+
+    path_rule {
+      paths   = ["/api", "/api/*"]
+      service = google_compute_backend_service.xfit_gym_api_backend.id
+    }
+  }
 }
 
 # URL map for HTTP to HTTPS redirect
@@ -156,7 +172,8 @@ resource "google_compute_target_https_proxy" "default" {
   url_map = google_compute_url_map.default.id
   ssl_certificates = [
     google_compute_managed_ssl_certificate.default.id,
-    google_compute_managed_ssl_certificate.oxidized_apps.id
+    google_compute_managed_ssl_certificate.oxidized_apps.id,
+    google_compute_managed_ssl_certificate.gymtest.id,
   ]
 }
 

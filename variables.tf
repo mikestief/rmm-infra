@@ -107,3 +107,9 @@ variable "vpc_subnetwork" {
   type        = string
   default     = "default"
 }
+
+variable "gymtest_domain" {
+  description = "Hostname for the XFit gym tracker demo (DNS A record managed manually at Squarespace)"
+  type        = string
+  default     = "gymtest.oxidizedapps.com"
+}
