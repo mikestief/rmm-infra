@@ -171,6 +171,7 @@ resource "google_cloud_run_v2_service" "xfit_gym_api" {
     }
 
     containers {
+      name  = "api"                   # CI deploys with: gcloud run services update --container=api
       image = "gcr.io/cloudrun/hello" # Placeholder - updated by CI/CD
 
       ports {
@@ -297,6 +298,7 @@ resource "google_cloud_run_v2_service" "xfit_gym_ui" {
     }
 
     containers {
+      name  = "ui"                    # CI deploys with: gcloud run services update --container=ui
       image = "gcr.io/cloudrun/hello" # Placeholder - updated by CI/CD
 
       ports {
