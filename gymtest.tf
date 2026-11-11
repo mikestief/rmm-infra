@@ -94,6 +94,19 @@ resource "google_sql_user" "xfit_gym_api_sa_user" {
 # OAuth client values are added manually after creating the OAuth client in the console:
 #   printf '%s' "<client id>"     | gcloud secrets versions add xfit-gym-oauth-client-id --data-file=-
 #   printf '%s' "<client secret>" | gcloud secrets versions add xfit-gym-oauth-client-secret --data-file=-
+#
+# Both secrets were created manually (with values) before the first apply, so
+# they are adopted into state with import blocks rather than created.
+import {
+  to = google_secret_manager_secret.xfit_gym_oauth_client_id
+  id = "projects/rustymaintenance/secrets/xfit-gym-oauth-client-id"
+}
+
+import {
+  to = google_secret_manager_secret.xfit_gym_oauth_client_secret
+  id = "projects/rustymaintenance/secrets/xfit-gym-oauth-client-secret"
+}
+
 resource "google_secret_manager_secret" "xfit_gym_oauth_client_id" {
   secret_id = "xfit-gym-oauth-client-id"
   replication {
