@@ -85,7 +85,6 @@ resource "google_sql_user" "xfit_gym_api_sa_user" {
 # After apply, as postgres (terraform output -raw postgres_password), connected to xfit_gym_db:
 #   GRANT ALL PRIVILEGES ON DATABASE xfit_gym_db TO "xfit-gym-api-sa@rustymaintenance.iam";
 #   GRANT ALL ON SCHEMA public TO "xfit-gym-api-sa@rustymaintenance.iam";
-#   ALTER SCHEMA public OWNER TO "xfit-gym-api-sa@rustymaintenance.iam";
 
 # ---------------------------------------------------------------------------
 # Secrets
